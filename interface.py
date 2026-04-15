@@ -1,17 +1,28 @@
 import tkinter as tk
 
+def mostrar_tela(frame):
+    global tela_atual
+
+    if tela_atual is not None:
+        tela_atual.pack_forget()
+
+    frame.pack(fill='both', expand=True)
+    tela_atual = frame
+
 def tela_serviçosFinanceiros():
-    tela_principal.pack_forget()
-    tela_serviços.pack(fill='both', expand=True)
+    mostrar_tela(tela_serviços)
+
+def abrir_tela_resultados():
+    mostrar_tela(tela_resultados)
+
 def abrir_tela_saque():
-    tela_serviços.pack_forget()
-    tela_saque.pack(fill='both', expand=True)
+    mostrar_tela(tela_saque)
+
 def abrir_tela_principal():
-    tela_serviços.pack_forget()
-    tela_principal.pack(fill='both', expand=True)
+    mostrar_tela(tela_principal)
+
 def cancelar_operação():
-    tela_saque.pack_forget()
-    tela_principal.pack(fill='both', expand=True)
+    mostrar_tela(tela_principal)
 
 #JANELA
 janela=tk.Tk()
@@ -22,11 +33,20 @@ janela.state('zoomed')
 #TELA PRINCIPAL
 tela_principal=tk.Frame(janela)
 tela_principal.pack(fill='both', expand=True)
+tela_atual = tela_principal
 
     #BOTÃO SERVIÇOS
-botao_serviços= tk.Button(tela_principal, text='Serviços Financeiros', font=('Arial', 30, 'bold'),
-                          command=tela_serviçosFinanceiros, bg='#69BCC7', fg='white')
-botao_serviços.place(relx=0.01, rely=0.1)
+botao_serviços= tk.Button(tela_principal, text='Serviços Financeiros', font=('Arial', 25, 'bold'),
+                          command=tela_serviçosFinanceiros, bg='#69BCC7', fg='white'
+                          ,bd=2, relief='solid',width=20)
+botao_serviços.place(relx=0.01, rely=0.2)
+    #BOTÃO RESULTADOS
+botao_resultados=tk.Button(tela_principal, text='Ultimos Resultados',
+                           font=('Arial', 25, 'bold'), bg='#69BCC7', fg='white'
+                           ,bd=2, relief='solid',width=20,command=abrir_tela_resultados)
+botao_resultados.place(relx=0.25, rely=0.2)
+
+
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
@@ -42,8 +62,33 @@ botao_deposito= tk.Button(tela_serviços, text=f'{"Depósito":^15}', font=('Aria
                            bg='#69BCC7', fg='white',bd=True,relief="solid")
 botao_deposito.place(relx=0.2, rely=0.25)
 
-    #BOTÃO VOLTAR
+    #BOTÃO VOLTAR (tela serviços)
 botao_voltar=tk.Button(tela_serviços, text='Voltar', font=('Arial', 30, 'bold'),
+                       command=abrir_tela_principal,bd=2, relief="solid")
+botao_voltar.place(relx=0.01, rely=0.9)
+
+#TELA DE RESULTADOS
+tela_resultados=tk.Frame(janela)
+
+    #BOTÃO RESULTADO DA MEGA SENA
+botao_resultado_megaSena=tk.Button(tela_resultados, text='MEGA SENA', font=('Arial', 30, 'bold'),
+                                   bg='green', fg='white', bd=True, relief="solid"
+                                   ,width=10)
+botao_resultado_megaSena.place(relx=0.2, rely=0.2)
+    #BOTÃO RESULTADO DA LOTOFACIL
+botao_resultado_lotofacil=tk.Button(tela_resultados, text='LOTOFACIL', font=('Arial', 30, 'bold'),
+                                    bg='purple', fg='white', bd=True, relief="solid"
+                                    ,width=10)
+botao_resultado_lotofacil.place(relx=0.4, rely=0.2)
+    #BOTÃO RESULTADO DA QUINA
+botao_resultado_quina=tk.Button(tela_resultados, text='QUINA', font=('Arial', 30, 'bold'),
+                                bg='#A02B93', fg='white', bd=True, relief="solid",
+                                width=10)
+botao_resultado_quina.place(relx=0.6, rely=0.2)
+
+
+    #BOTÃO VOLTAR (tela resultados)
+botao_voltar=tk.Button(tela_resultados, text='Voltar', font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal,bd=2, relief="solid")
 botao_voltar.place(relx=0.01, rely=0.9)
 
