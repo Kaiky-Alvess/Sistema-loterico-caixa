@@ -1,4 +1,33 @@
 import tkinter as tk
+import requests
+from loterias.mega_sena import criar_tela_megasena
+
+def buscar_lotofacil():
+    url = "https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest"
+    resposta = requests.get(url)
+    dados = resposta.json()
+    numeros = dados["dezenas"]
+    concurso = dados["concurso"]
+    texto_resultado.config(text=f"Lotofácil\nConcurso {concurso}\n" + " - ".join(numeros),
+                           bg="purple", fg="white")
+
+def buscar_megasena():
+    url = "https://loteriascaixa-api.herokuapp.com/api/megasena/latest"
+    resposta = requests.get(url)
+    dados = resposta.json()
+    numeros = dados["dezenas"]
+    concurso = dados["concurso"]
+    texto_resultado.config(text=f"Mega Sena\nConcurso {concurso}\n" + " - ".join(numeros),
+                           bg="green",fg="white")
+
+def buscar_quina():
+    url="https://loteriascaixa-api.herokuapp.com/api/quina/latest"
+    resposta= requests.get(url)
+    dados = resposta.json()
+    numeros = dados["dezenas"]
+    concurso = dados["concurso"]
+    texto_resultado.config(text=f"Quina\nConcurso {concurso}\n" + " - ".join(numeros),
+                           bg="#A02B93",fg="white")
 
 def mostrar_tela(frame):
     global tela_atual
@@ -9,11 +38,15 @@ def mostrar_tela(frame):
     frame.pack(fill='both', expand=True)
     tela_atual = frame
 
+def tela_marcar_megasena():
+    mostrar_tela(marcar_megaSena)
+
 def tela_serviçosFinanceiros():
     mostrar_tela(tela_serviços)
 
 def abrir_tela_resultados():
     mostrar_tela(tela_resultados)
+
 
 def abrir_tela_saque():
     mostrar_tela(tela_saque)
@@ -29,6 +62,10 @@ janela=tk.Tk()
 janela.geometry('1920x1080')
 janela.title('Sistema de Loterico Caixa')
 janela.state('zoomed')
+logo= tk.PhotoImage(file='Imagens/logo_caixa.png')
+janela.iconphoto(True,logo)
+
+
 
 #TELA PRINCIPAL
 tela_principal=tk.Frame(janela)
@@ -46,7 +83,25 @@ botao_resultados=tk.Button(tela_principal, text='Ultimos Resultados',
                            ,bd=2, relief='solid',width=20,command=abrir_tela_resultados)
 botao_resultados.place(relx=0.25, rely=0.2)
 
+    #BOTÃO MEGA SENA
+botao_megaSena=tk.Button(tela_principal, text='MEGA SENA', font=('Arial', 30, 'bold'),
+                                   bg='green', fg='white', bd=True, relief="solid"
+                                   ,width=20,command=tela_marcar_megasena)
+botao_megaSena.place(relx=0.7, rely=0.2)
 
+marcar_megaSena = criar_tela_megasena(janela)
+
+    #BOTÃO LOTOFAICL
+botao_lotofacil=tk.Button(tela_principal, text='LOTOFACIL', font=('Arial', 30, 'bold'),
+                                    bg='purple', fg='white', bd=True, relief="solid"
+                                    ,width=20)
+botao_lotofacil.place(relx=0.7, rely=0.3)
+
+    #BOTÃO QUINA
+botao_quina=tk.Button(tela_principal, text='QUINA', font=('Arial', 30, 'bold'),
+                                bg='#A02B93', fg='white', bd=True, relief="solid",
+                                width=20)
+botao_quina.place(relx=0.7, rely=0.4)
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
@@ -62,28 +117,36 @@ botao_deposito= tk.Button(tela_serviços, text=f'{"Depósito":^15}', font=('Aria
                            bg='#69BCC7', fg='white',bd=True,relief="solid")
 botao_deposito.place(relx=0.2, rely=0.25)
 
+
     #BOTÃO VOLTAR (tela serviços)
 botao_voltar=tk.Button(tela_serviços, text='Voltar', font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal,bd=2, relief="solid")
 botao_voltar.place(relx=0.01, rely=0.9)
 
+
+
 #TELA DE RESULTADOS
 tela_resultados=tk.Frame(janela)
+
+texto_resultado = tk.Label(tela_resultados,font=('Arial', 20, 'bold'),justify='center')
+texto_resultado.place(relx=0.48, rely=0.5, anchor='center')
 
     #BOTÃO RESULTADO DA MEGA SENA
 botao_resultado_megaSena=tk.Button(tela_resultados, text='MEGA SENA', font=('Arial', 30, 'bold'),
                                    bg='green', fg='white', bd=True, relief="solid"
-                                   ,width=10)
+                                   ,width=10,command=buscar_megasena)
 botao_resultado_megaSena.place(relx=0.2, rely=0.2)
+
     #BOTÃO RESULTADO DA LOTOFACIL
 botao_resultado_lotofacil=tk.Button(tela_resultados, text='LOTOFACIL', font=('Arial', 30, 'bold'),
                                     bg='purple', fg='white', bd=True, relief="solid"
-                                    ,width=10)
+                                    ,width=10,command=buscar_lotofacil)
 botao_resultado_lotofacil.place(relx=0.4, rely=0.2)
+
     #BOTÃO RESULTADO DA QUINA
 botao_resultado_quina=tk.Button(tela_resultados, text='QUINA', font=('Arial', 30, 'bold'),
                                 bg='#A02B93', fg='white', bd=True, relief="solid",
-                                width=10)
+                                width=10,command=buscar_quina)
 botao_resultado_quina.place(relx=0.6, rely=0.2)
 
 
