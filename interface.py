@@ -183,12 +183,12 @@ tela_saque=tk.Frame(janela)
 
     #BOTÃO CANCELAR
 botao_cancelar=tk.Button(tela_saque, text='Cancelar', font=('Arial', 30, 'bold'),
-                         fg='red',command=cancelar_operação,bd=2, relief="solid")
+                         bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
 botao_cancelar.place(relx=0.01, rely=0.9)
 
     #BOTÃO CONFIRMAR
 botao_confirmar=tk.Button(tela_saque,text='Confimar', font=('Arial', 30, 'bold'),
-                          fg='green',bd=2, relief="solid")
+                          bg='green',fg='white',bd=2, relief="solid")
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))
