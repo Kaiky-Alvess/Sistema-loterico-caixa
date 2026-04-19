@@ -89,6 +89,12 @@ botao_resultados=tk.Button(tela_principal, text='Ultimos Resultados',
                            ,bd=2, relief='solid',width=20,command=abrir_tela_resultados)
 botao_resultados.place(relx=0.25, rely=0.2)
 
+    #BOTÃO ATENDIMENTO
+botao_atendimento=tk.Button(tela_principal, text='Atendimento',font=('Arial', 25, 'bold'),
+                            bg='#69BCC7', fg='white'
+                           ,bd=2, relief='solid',width=20)
+botao_atendimento.place(relx=0.01, rely=0.4)
+
     #BOTÃO MEGA SENA
 botao_megaSena=tk.Button(tela_principal, text='MEGA SENA', font=('Arial', 30, 'bold'),
                                    bg='green', fg='white', bd=True, relief="solid"
@@ -166,6 +172,11 @@ botao_resultado_quina.place(relx=0.6, rely=0.2)
 botao_voltar=tk.Button(tela_resultados, text='Voltar', font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal,bd=2, relief="solid")
 botao_voltar.place(relx=0.01, rely=0.9)
+
+#TELA DE ATENDIMENTO
+
+tela_atendimento=tk.Frame(janela)
+
 
 #TELA DE SAQUE
 tela_saque=tk.Frame(janela)

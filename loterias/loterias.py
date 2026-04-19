@@ -4,7 +4,7 @@ import tkinter as tk
 def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas,cor_fundo,cor_marcado):
     selecionados = []
     botoes = []
-
+    apostas=[]
     def marcar(numero, botao):
         if numero in selecionados:
             selecionados.remove(numero)
@@ -14,7 +14,11 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
             if len(selecionados) < limite:
                 selecionados.append(numero)
                 botao.config(bg=cor_marcado, fg="white")
-
+    def fazer_aposta():
+        if len(selecionados) == limite:
+            apostas.append(sorted(selecionados[:]))
+            print(sorted(apostas))
+            funcao_voltar()
     def limpar_aposta():
         selecionados.clear()
 
@@ -56,9 +60,12 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
     botao_cancelar = tk.Button(frame,text="Cancelar", font=("Arial", 30, "bold"),fg="red",command=funcao_voltar)
     botao_cancelar.place(relx=0.01, rely=0.9)
 
-    botao_confirmar = tk.Button(frame,text="Confirmar",font=("Arial", 30, "bold"),fg="green")
+    botao_confirmar = tk.Button(frame,text="Confirmar",font=("Arial", 30, "bold"),fg="green",command=fazer_aposta)
     botao_confirmar.place(relx=0.87, rely=0.9)
 
     frame.limpar_aposta = limpar_aposta
 
+
+
     return frame
+
