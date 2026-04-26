@@ -6,6 +6,10 @@ from loterias.loterias import criar_tela_loteria
 
 carrinho=[]
 
+precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
+
+
+
 def buscar_lotofacil():
     url = "https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest"
     resposta = requests.get(url)
@@ -69,14 +73,19 @@ def atualizar_carrinho():
     for i, item in enumerate(carrinho):
         linha = tk.Frame(frame_lista)
         linha.pack(fill="x", pady=5, padx=10)
-        texto = tk.Label(linha,text=f'{item["jogo"]}: {item["numeros"]}',font=("Arial", 16),anchor="w")
+        texto = tk.Label(linha,text=f'{item["jogo"]}: {item["numeros"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
         texto.pack(side="left")
         botao_remover = tk.Button(linha,text="X",font=("Arial", 14, "bold")
                                   ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
         botao_remover.pack(side="left")
+
+        total = sum(item["preco"] for item in carrinho)
+        label_total.config(text=f"Total: R$ {total:.2f}")
+
 def remover_aposta(indice):
     carrinho.pop(indice)
     atualizar_carrinho()
+
 def abrir_tela_atendimento():
     atualizar_carrinho()
     mostrar_tela(tela_atendimento)
@@ -125,7 +134,7 @@ botao_megaSena=tk.Button(tela_principal, text='MEGA SENA', font=('Arial', 30, 'b
 botao_megaSena.place(relx=0.7, rely=0.2)
 
 marcar_megaSena = criar_tela_loteria(janela, abrir_tela_principal,"Mega Sena",60,6,10,
-                                     "green","#DAA520",carrinho)
+                                     "green","#DAA520",carrinho,precos["Mega Sena"])
 
     #BOTÃO LOTOFAICL
 botao_lotofacil=tk.Button(tela_principal, text='LOTOFACIL', font=('Arial', 30, 'bold'),
@@ -133,7 +142,7 @@ botao_lotofacil=tk.Button(tela_principal, text='LOTOFACIL', font=('Arial', 30, '
                                     ,width=20,command=tela_marcar_lotofacil)
 botao_lotofacil.place(relx=0.7, rely=0.3)
 marcar_lotofacil = criar_tela_loteria(janela,abrir_tela_principal,"Lotofacil",25,15,5,
-                                      "purple","#DAA520",carrinho)
+                                      "purple","#DAA520",carrinho,precos["Lotofacil"])
 
     #BOTÃO QUINA
 botao_quina=tk.Button(tela_principal, text='QUINA', font=('Arial', 30, 'bold'),
@@ -142,7 +151,7 @@ botao_quina=tk.Button(tela_principal, text='QUINA', font=('Arial', 30, 'bold'),
 botao_quina.place(relx=0.7, rely=0.4)
 
 marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
-                                 "blue","#DAA520",carrinho)
+                                 "blue","#DAA520",carrinho,precos["Quina"])
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
@@ -202,9 +211,12 @@ tela_atendimento=tk.Frame(janela)
 
 texto = tk.Label(tela_atendimento, font=("Arial", 16))
 texto.pack()
+label_total = tk.Label(tela_atendimento, font=("Arial", 18, "bold"))
+label_total.pack()
 
 frame_lista = tk.Frame(tela_atendimento)
 frame_lista.pack(pady=20, fill="both", expand=True)
+
 botao_voltar = tk.Button(tela_atendimento, text='X', font=('Arial', 30, 'bold'),
                              command=abrir_tela_principal, bd=2, relief="solid")
 

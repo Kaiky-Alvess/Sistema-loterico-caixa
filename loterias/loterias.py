@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas,cor_fundo,cor_marcado,carrinho):
+def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas,cor_fundo,cor_marcado,carrinho,preco):
     selecionados = []
     botoes = []
     apostas=[]
@@ -16,7 +16,7 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
                 botao.config(bg=cor_marcado, fg="white")
     def fazer_aposta():
         if len(selecionados) == limite:
-            carrinho.append({"jogo": titulo,"numeros": sorted(selecionados[:])})
+            carrinho.append({"jogo": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
             print(carrinho)
             funcao_voltar()
     def limpar_aposta():
