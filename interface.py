@@ -73,9 +73,9 @@ def atualizar_carrinho():
     for i, item in enumerate(carrinho):
         linha = tk.Frame(frame_lista)
         linha.pack(fill="x", pady=5, padx=10)
-        texto = tk.Label(linha,text=f'{item["jogo"]}: {item["numeros"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
+        texto = tk.Label(linha,text=f'{item["jogo"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
         texto.pack(side="left")
-        botao_remover = tk.Button(linha,text="X",font=("Arial", 14, "bold")
+        botao_remover = tk.Button(linha,text="—",font=("Arial", 14, "bold")
                                   ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
         botao_remover.pack(side="left")
 
@@ -85,6 +85,8 @@ def atualizar_carrinho():
 def remover_aposta(indice):
     carrinho.pop(indice)
     atualizar_carrinho()
+    total = sum(item["preco"] for item in carrinho)
+    label_total.config(text=f"Total: R$ {total:.2f}")
 
 def abrir_tela_atendimento():
     atualizar_carrinho()
