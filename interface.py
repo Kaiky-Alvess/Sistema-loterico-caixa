@@ -3,11 +3,12 @@ import requests
 
 from loterias.loterias import criar_tela_loteria
 
+import sqlite3
 
 carrinho=[]
 
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
-
+kaiky={"agencia":1234,"conta":56789}
 
 
 def buscar_lotofacil():
@@ -60,6 +61,21 @@ def tela_serviçosFinanceiros():
 def abrir_tela_resultados():
     mostrar_tela(tela_resultados)
 
+def tela_validar_conta():
+    mostrar_tela(tela_validar)
+
+def validar_conta():
+    if not agencia.get() or not numero_conta.get():
+        print("Erro")
+        return
+
+    validar_agencia=int(agencia.get())
+    validar_conta=int(numero_conta.get())
+    print(validar_agencia)
+    if validar_agencia == kaiky["agencia"] and validar_conta == kaiky["conta"]:
+        abrir_tela_saque()
+    else:
+        print('error')
 
 def abrir_tela_saque():
     mostrar_tela(tela_saque)
@@ -73,7 +89,7 @@ def atualizar_carrinho():
     for i, item in enumerate(carrinho):
         linha = tk.Frame(frame_lista)
         linha.pack(fill="x", pady=5, padx=10)
-        texto = tk.Label(linha,text=f'{item["jogo"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
+        texto = tk.Label(linha,text=f'{item["nome"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
         texto.pack(side="left")
         botao_remover = tk.Button(linha,text="—",font=("Arial", 14, "bold")
                                   ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
@@ -95,8 +111,8 @@ def abrir_tela_atendimento():
 def cancelar_operação():
     mostrar_tela(tela_principal)
 
-
-
+def validar(texto,total_algarismos):
+    return texto == "" or (texto.isdigit() and len(texto) <= int(total_algarismos))
 
 #JANELA
 janela=tk.Tk()
@@ -106,6 +122,8 @@ janela.state('zoomed')
 logo= tk.PhotoImage(file='Imagens/logo_caixa.png')
 janela.iconphoto(True,logo)
 
+
+validacao = janela.register(validar)
 
 #TELA PRINCIPAL
 tela_principal=tk.Frame(janela)
@@ -158,11 +176,24 @@ marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
 
+#TELA DE VALIDAÇÃO
+tela_validar=tk.Frame(janela)
+
+
+texto=tk.Label(tela_validar, text="Agência")
+texto.pack()
+agencia=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",4))
+agencia.pack()
+texto=tk.Label(tela_validar, text="Conta")
+texto.pack()
+numero_conta=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",10))
+numero_conta.pack()
 
     #BOTÃO SAQUE
 botao_saque= tk.Button(tela_serviços, text=f'{"Saque":^15}', font=('Arial', 30, 'bold'),
-                       command=abrir_tela_saque, bg='#69BCC7', fg='white', bd=True, relief="solid")
+                       command=tela_validar_conta, bg='#69BCC7', fg='white', bd=True, relief="solid")
 botao_saque.place(relx=0.01, rely=0.25)
+
 
     #BOTÃO DEPÓSITO
 botao_deposito= tk.Button(tela_serviços, text=f'{"Depósito":^15}', font=('Arial', 30, 'bold'),
@@ -237,8 +268,8 @@ botao_cancelar=tk.Button(tela_saque, text='Cancelar', font=('Arial', 30, 'bold')
 botao_cancelar.place(relx=0.01, rely=0.9)
 
     #BOTÃO CONFIRMAR
-botao_confirmar=tk.Button(tela_saque,text='Confimar', font=('Arial', 30, 'bold'),
-                          bg='green',fg='white',bd=2, relief="solid")
+botao_confirmar=tk.Button(tela_validar,text='Confimar', font=('Arial', 30, 'bold'),
+                          bg='green',fg='white',bd=2, relief="solid",command=validar_conta)
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))

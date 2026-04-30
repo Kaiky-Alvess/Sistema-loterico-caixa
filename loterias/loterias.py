@@ -1,5 +1,5 @@
 import tkinter as tk
-from random import randint
+from random import sample
 
 def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas,cor_fundo,cor_marcado,carrinho,preco):
     selecionados = []
@@ -16,7 +16,7 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
                 botao.config(bg=cor_marcado, fg="white")
     def fazer_aposta():
         if len(selecionados) == limite:
-            carrinho.append({"jogo": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
+            carrinho.append({"nome": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
             print(carrinho)
             funcao_voltar()
     def limpar_aposta():
@@ -26,8 +26,9 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
             botao.config(bg="#F0F0F0", fg="black")
     def fazer_surpresinha():
         for c in range(0,limite):
-            selecionados.append(randint(0,total_numeros))
-        carrinho.append({"jogo": titulo, "numeros": sorted(selecionados[:]), "preco": preco})
+            selecionados.clear()
+            selecionados.extend(sample(range(1, total_numeros + 1), limite))
+        carrinho.append({"nome": titulo, "numeros": sorted(selecionados[:]), "preco": preco})
         print(carrinho)
         funcao_voltar()
     frame = tk.Frame(janela)
