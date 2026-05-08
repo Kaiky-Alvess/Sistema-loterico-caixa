@@ -111,7 +111,9 @@ def depositar():
     conta.depositar(int(valor_deposito.get()))
     banco.atualizar_conta(conta)
     mostrar_tela(tela_principal)
+    #carrinho.append({"nome": 'Deposito', "numeros": None, "preco": float(valor_deposito.get())})
     print(conta.saldo)
+
 
 def abrir_tela_principal():
     mostrar_tela(tela_principal)
