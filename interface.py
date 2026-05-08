@@ -1,12 +1,18 @@
 import tkinter as tk
 import requests
 
+
+from banco.classe import *
 from loterias.loterias import criar_tela_loteria
 
-import sqlite3
+
+
+banco.listar_contas()
 
 carrinho=[]
+conta_atual=0
 
+saqueOuDeposito=''
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
 kaiky={"agencia":1234,"conta":56789}
 
@@ -61,24 +67,51 @@ def tela_serviçosFinanceiros():
 def abrir_tela_resultados():
     mostrar_tela(tela_resultados)
 
-def tela_validar_conta():
+def tela_validar_saque():
+    global saqueOuDeposito
+    saqueOuDeposito='Saque'
+    mostrar_tela(tela_validar)
+def tela_validar_deposito():
+    global saqueOuDeposito
+    saqueOuDeposito='Deposito'
     mostrar_tela(tela_validar)
 
 def validar_conta():
+    global conta_atual
     if not agencia.get() or not numero_conta.get():
         print("Erro")
         return
 
     validar_agencia=int(agencia.get())
     validar_conta=int(numero_conta.get())
-    print(validar_agencia)
-    if validar_agencia == kaiky["agencia"] and validar_conta == kaiky["conta"]:
-        abrir_tela_saque()
-    else:
-        print('error')
+    contas = banco.listar_contas()
+    for conta in contas:
+        if validar_agencia ==conta.agencia  and validar_conta == conta.conta:
+            conta_atual=conta.id
+            if saqueOuDeposito=='Saque':
+                abrir_tela_saque()
+            else:
+                abrir_tela_deposito()
 
 def abrir_tela_saque():
     mostrar_tela(tela_saque)
+
+def abrir_tela_deposito():
+    mostrar_tela(tela_deposito)
+
+def sacar():
+   conta=banco.buscar_conta(conta_atual)
+   conta.sacar(int(valor_saque.get()))
+   banco.atualizar_conta(conta)
+   mostrar_tela(tela_principal)
+   print(conta.saldo)
+
+def depositar():
+    conta=banco.buscar_conta(conta_atual)
+    conta.depositar(int(valor_deposito.get()))
+    banco.atualizar_conta(conta)
+    mostrar_tela(tela_principal)
+    print(conta.saldo)
 
 def abrir_tela_principal():
     mostrar_tela(tela_principal)
@@ -191,13 +224,13 @@ numero_conta.pack()
 
     #BOTÃO SAQUE
 botao_saque= tk.Button(tela_serviços, text=f'{"Saque":^15}', font=('Arial', 30, 'bold'),
-                       command=tela_validar_conta, bg='#69BCC7', fg='white', bd=True, relief="solid")
+                       command=tela_validar_saque, bg='#69BCC7', fg='white', bd=True, relief="solid")
 botao_saque.place(relx=0.01, rely=0.25)
 
 
     #BOTÃO DEPÓSITO
 botao_deposito= tk.Button(tela_serviços, text=f'{"Depósito":^15}', font=('Arial', 30, 'bold'),
-                           bg='#69BCC7', fg='white',bd=True,relief="solid")
+                           bg='#69BCC7', fg='white',bd=True,relief="solid",command=tela_validar_deposito)
 botao_deposito.place(relx=0.2, rely=0.25)
 
 
@@ -262,6 +295,8 @@ botao_voltar.place(relx=0.01, rely=0.9)
 #TELA DE SAQUE
 tela_saque=tk.Frame(janela)
 
+tela_deposito=tk.Frame(janela)
+
     #BOTÃO CANCELAR
 botao_cancelar=tk.Button(tela_validar, text='Cancelar', font=('Arial', 30, 'bold'),
                          bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
@@ -279,12 +314,28 @@ botao_cancelar.place(relx=0.01, rely=0.9)
 
     #BOTÃO CONFIRMAR
 botao_confirmar=tk.Button(tela_saque,text='Confimar', font=('Arial', 30, 'bold'),
-                          bg='green',fg='white',bd=2, relief="solid",)
+                          bg='green',fg='white',bd=2, relief="solid",command=sacar)
+botao_confirmar.place(relx=0.87, rely=0.9)
+
+    #BOTÃO CANCELAR
+botao_cancelar=tk.Button(tela_deposito, text='Cancelar', font=('Arial', 30, 'bold'),
+                         bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
+botao_cancelar.place(relx=0.01, rely=0.9)
+
+    #BOTÃO CONFIRMAR
+botao_confirmar=tk.Button(tela_deposito,text='Confimar', font=('Arial', 30, 'bold'),
+                          bg='green',fg='white',bd=2, relief="solid",command=depositar)
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))
 texto_valor.place(relx=0.45,rely=0.45)
 valor_saque=tk.Entry(tela_saque)
 valor_saque.place(relx=0.45,rely=0.5)
+
+texto_valor=tk.Label(tela_deposito, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))
+texto_valor.place(relx=0.45,rely=0.45)
+valor_deposito=tk.Entry(tela_deposito)
+valor_deposito.place(relx=0.45,rely=0.5)
+
 
 janela.mainloop()

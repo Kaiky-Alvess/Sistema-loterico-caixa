@@ -1,8 +1,22 @@
+import sqlite3
+import os
+from random import randint
+
+
+CAMINHO_DB = os.path.join(
+    os.path.dirname(__file__),
+    'dados.db'
+)
+
+
 class Conta():
-    def __init__(self, titular, saldo=0):
+    def __init__(self, titular, saldo=0,id=None,tipo=None,conta=None):
+        self.id=id
         self.titular = titular
         self.saldo = saldo
-
+        self.agencia = 732
+        self.conta = conta or randint(1000,9999)
+        self.tipo = tipo
     def depositar(self, valor):
         if valor > 0:
             self.saldo += valor
@@ -16,18 +30,14 @@ class Conta():
             return f'Saque de R${valor:.2f} realizado com sucesso.'
         else:
             return 'Saldo insuficiente ou valor inválido.'
-
-    def tipo(self):
-        return 'Conta'
-
     def __str__(self):
         return f'Conta de {self.titular} com saldo de R${self.saldo:.2f}'
 
 
 class ContaPoupanca(Conta):
-    def __init__(self, titular, saldo=0):
+    def __init__(self, titular, saldo=0 ):
         super().__init__(titular, saldo)
-
+        self.tipo = 'Poupanca'
     def render_juros(self):
         if self.saldo > 0:
             juros = self.saldo * 0.01
@@ -36,14 +46,13 @@ class ContaPoupanca(Conta):
         else:
             return 'Saldo insuficiente para render juros.'
 
-    def tipo(self):
-        return 'Conta Poupança'
+
 
 
 class ContaCorrente(Conta):
     def __init__(self, titular, saldo=0):
         super().__init__(titular, saldo)
-
+        self.tipo = 'Corrente'
     def sacar(self, valor):
         if valor > 0 and valor <= self.saldo:
             if valor < 500:
@@ -56,5 +65,101 @@ class ContaCorrente(Conta):
         else:
             return 'Saldo insuficiente ou valor inválido.'
 
-    def tipo(self):
-        return 'Conta Corrente'
+class Banco():
+    def __init__(self):
+        self.conexao = sqlite3.connect(CAMINHO_DB)
+        self.cursor=self.conexao.cursor()
+        self.criar_tabela()
+
+    def criar_tabela(self):
+        self.cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            saldo REAL,
+            agencia INTEGER,
+            conta INTEGER,
+            tipo TEXT
+        )
+        """)
+        self.conexao.commit()
+
+    def salvar_conta(self, conta):
+        self.cursor.execute("""
+        INSERT INTO usuarios (nome, saldo,  agencia, conta ,tipo)
+        VALUES (?, ?, ?, ?, ?)
+        """, (conta.titular, conta.saldo, conta.agencia, conta.conta, conta.tipo))
+
+        self.conexao.commit()
+
+    def listar_contas(self):
+        self.cursor.execute("""
+        SELECT * FROM usuarios
+        """)
+
+        dados = self.cursor.fetchall()
+        contas = []
+
+        for dado in dados:
+            conta = Conta(
+                titular=dado[1],
+                saldo=dado[2],
+                id=dado[0],
+                tipo=dado[5]
+            )
+            conta.agencia = dado[3]
+            conta.conta = dado[4]
+            contas.append(conta)
+        return contas
+
+    def atualizar_conta(self, conta):
+        self.cursor.execute("""
+        UPDATE usuarios
+        SET nome = ?, saldo = ?, agencia = ?, conta = ?, tipo = ?
+        WHERE id = ?
+        """, (
+            conta.titular,
+            conta.saldo,
+            conta.agencia,
+            conta.conta,
+            conta.tipo,
+            conta.id
+        ))
+
+        self.conexao.commit()
+
+    def buscar_conta(self, id):
+        self.cursor.execute("""
+        SELECT * FROM usuarios
+        WHERE id = ?
+        """, (id,))
+
+        dado = self.cursor.fetchone()
+        if dado is None:
+            print("Conta não encontrada")
+            return None
+
+        if dado[5] == 'Poupanca':
+            conta = ContaPoupanca(
+                titular=dado[1],
+                saldo=dado[2]
+            )
+        else:
+            conta = ContaCorrente(
+                titular=dado[1],
+                saldo=dado[2]
+            )
+        conta.id=dado[0]
+        conta.agencia = dado[3]
+        conta.conta = dado[4]
+
+        return conta
+
+banco=Banco()
+
+
+
+
+
+
+
