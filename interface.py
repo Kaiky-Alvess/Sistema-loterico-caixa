@@ -104,7 +104,7 @@ def sacar():
    valor=int(valor_saque.get())
    conta.sacar(valor)
    banco.atualizar_conta(conta)
-   carrinho.append({"nome": "saque", "numeros": None, "preco": float(valor*-1)})
+   carrinho.append({"nome": "Saque", "numeros": None, "preco": float(valor*-1)})
    mostrar_tela(tela_principal)
    print(conta.saldo)
 
@@ -116,6 +116,12 @@ def depositar():
     #carrinho.append({"nome": 'Deposito', "numeros": None, "preco": float(valor_deposito.get())})
     print(conta.saldo)
 
+def finalizar_atendimento():
+    carrinho.clear()
+    atualizar_carrinho()
+    total = sum(item["preco"] for item in carrinho)
+    label_total.config(text=f"Total: R$ {total:.2f}")
+    mostrar_tela(tela_principal)
 
 def abrir_tela_principal():
     mostrar_tela(tela_principal)
@@ -292,10 +298,11 @@ label_total.pack()
 frame_lista = tk.Frame(tela_atendimento)
 frame_lista.pack(pady=20, fill="both", expand=True)
 
-botao_voltar = tk.Button(tela_atendimento, text='X', font=('Arial', 30, 'bold'),
-                             command=abrir_tela_principal, bd=2, relief="solid")
 
 
+botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
+                           command=finalizar_atendimento,bd=2, relief="solid")
+botao_finalizar.place(relx=0.89, rely=0.9)
 
 botao_voltar=tk.Button(tela_atendimento, text='Voltar', font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal,bd=2, relief="solid")
