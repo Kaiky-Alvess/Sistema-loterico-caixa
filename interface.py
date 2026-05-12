@@ -138,7 +138,7 @@ def atualizar_carrinho():
         else:
             texto = tk.Label(linha,text=f'{item["nome"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
             texto.pack(side="left")
-        if not item["nome"] == "saque":
+        if not item["nome"] == "Saque":
             botao_remover = tk.Button(linha,text="—",font=("Arial", 14, "bold")
                                       ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
             botao_remover.pack(side="left")
@@ -228,13 +228,13 @@ tela_serviços=tk.Frame(janela)
 tela_validar=tk.Frame(janela)
 
 
-texto=tk.Label(tela_validar, text="Agência")
+texto=tk.Label(tela_validar, text="Agência",font=('Arial', 30, 'bold'))
 texto.pack()
-agencia=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",4))
+agencia=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",4),font=('Arial',30,'bold'))
 agencia.pack()
-texto=tk.Label(tela_validar, text="Conta")
+texto=tk.Label(tela_validar, text="Conta",font=('Arial',30,'bold'))
 texto.pack()
-numero_conta=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",10))
+numero_conta=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",10),font=('Arial',30,'bold'))
 numero_conta.pack()
 
     #BOTÃO SAQUE
@@ -343,15 +343,15 @@ botao_confirmar=tk.Button(tela_deposito,text='Confimar', font=('Arial', 30, 'bol
                           bg='green',fg='white',bd=2, relief="solid",command=depositar)
 botao_confirmar.place(relx=0.87, rely=0.9)
 
-texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))
-texto_valor.place(relx=0.45,rely=0.45)
-valor_saque=tk.Entry(tela_saque)
-valor_saque.place(relx=0.45,rely=0.5)
+texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 30, 'bold'))
+texto_valor.place(relx=0.5,rely=0.25,anchor='center')
+valor_saque=tk.Entry(tela_saque,font=('Arial', 30, 'bold'))
+valor_saque.place(relx=0.5,rely=0.35,anchor='center')
 
-texto_valor=tk.Label(tela_deposito, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 10, 'bold'))
-texto_valor.place(relx=0.45,rely=0.45)
-valor_deposito=tk.Entry(tela_deposito)
-valor_deposito.place(relx=0.45,rely=0.5)
+texto_valor=tk.Label(tela_deposito, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial',30, 'bold'))
+texto_valor.place(relx=0.5,rely=0.25,anchor='center')
+valor_deposito=tk.Entry(tela_deposito,font=('Arial', 30, 'bold'))
+valor_deposito.place(relx=0.5,rely=0.35,anchor='center')
 
 
 janela.mainloop()
