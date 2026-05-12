@@ -101,8 +101,10 @@ def abrir_tela_deposito():
 
 def sacar():
    conta=banco.buscar_conta(conta_atual)
-   conta.sacar(int(valor_saque.get()))
+   valor=int(valor_saque.get())
+   conta.sacar(valor)
    banco.atualizar_conta(conta)
+   carrinho.append({"nome": "saque", "numeros": None, "preco": float(valor*-1)})
    mostrar_tela(tela_principal)
    print(conta.saldo)
 
@@ -124,11 +126,16 @@ def atualizar_carrinho():
     for i, item in enumerate(carrinho):
         linha = tk.Frame(frame_lista)
         linha.pack(fill="x", pady=5, padx=10)
-        texto = tk.Label(linha,text=f'{item["nome"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
-        texto.pack(side="left")
-        botao_remover = tk.Button(linha,text="—",font=("Arial", 14, "bold")
-                                  ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
-        botao_remover.pack(side="left")
+        if item["preco"]<0:
+            texto = tk.Label(linha, text=f'{item["nome"]} |  R${item["preco"] * -1:.2f}', font=("Arial", 16),anchor="w")
+            texto.pack(side="left")
+        else:
+            texto = tk.Label(linha,text=f'{item["nome"]} |  R${item["preco"]:.2f}',font=("Arial", 16),anchor="w")
+            texto.pack(side="left")
+        if not item["nome"] == "saque":
+            botao_remover = tk.Button(linha,text="—",font=("Arial", 14, "bold")
+                                      ,bg="red",fg="white",command=lambda idx=i: remover_aposta(idx))
+            botao_remover.pack(side="left")
 
         total = sum(item["preco"] for item in carrinho)
         label_total.config(text=f"Total: R$ {total:.2f}")

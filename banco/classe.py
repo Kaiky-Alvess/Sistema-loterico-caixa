@@ -56,7 +56,7 @@ class ContaCorrente(Conta):
     def sacar(self, valor):
         if valor > 0 and valor <= self.saldo:
             if valor < 500:
-                taxa = 1
+                taxa = 0
                 self.saldo -= (valor + taxa)
                 return f'Saque de R${valor:.2f} realizado com sucesso. Taxa de R${taxa:.2f} aplicada.'
             else:
