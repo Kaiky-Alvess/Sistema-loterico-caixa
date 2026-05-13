@@ -108,13 +108,30 @@ def sacar():
    mostrar_tela(tela_principal)
    print(conta.saldo)
 
-def depositar():
-    conta=banco.buscar_conta(conta_atual)
-    conta.depositar(int(valor_deposito.get()))
-    banco.atualizar_conta(conta)
+def adicionar_deposito():
+    valor=int(valor_deposito.get())
+    carrinho.append({"nome": 'Deposito', "numeros": None, "preco": float(valor)})
     mostrar_tela(tela_principal)
-    #carrinho.append({"nome": 'Deposito', "numeros": None, "preco": float(valor_deposito.get())})
-    print(conta.saldo)
+    return valor
+
+
+def confirmar_deposito():
+    for item in carrinho:
+        if item['nome'] == "Deposito":
+            conta=banco.buscar_conta(conta_atual)
+            conta.depositar(int(valor_deposito.get()))
+            banco.atualizar_conta(conta)
+            print(conta.saldo)
+            finalizar_atendimento()
+
+
+
+def mostrar_conta():
+    conta=banco.buscar_conta(conta_atual)
+    titular=tk.Label(tela_confirmar, text=f'{conta.titular}',font=('Arial', 30))
+    titular.place(relx=0.5,rely=0.25,anchor='center')
+    valor=tk.Label(tela_confirmar, text=f'',font=('Arial', 30))
+    valor.place(relx=0.5,rely=0.35,anchor='center')
 
 def finalizar_atendimento():
     carrinho.clear()
@@ -155,6 +172,18 @@ def remover_aposta(indice):
 def abrir_tela_atendimento():
     atualizar_carrinho()
     mostrar_tela(tela_atendimento)
+
+def abrir_tela_confirmar():
+    for item in carrinho:
+        if item["nome"] == "Deposito":
+            mostrar_conta()
+            mostrar_tela(tela_confirmar)
+            break
+        else:
+            finalizar_atendimento()
+
+
+
 
 def cancelar_operação():
     mostrar_tela(tela_principal)
@@ -301,7 +330,7 @@ frame_lista.pack(pady=20, fill="both", expand=True)
 
 
 botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
-                           command=finalizar_atendimento,bd=2, relief="solid")
+                           command=abrir_tela_confirmar,bd=2, relief="solid")
 botao_finalizar.place(relx=0.89, rely=0.9)
 
 botao_voltar=tk.Button(tela_atendimento, text='Voltar', font=('Arial', 30, 'bold'),
@@ -340,7 +369,7 @@ botao_cancelar.place(relx=0.01, rely=0.9)
 
     #BOTÃO CONFIRMAR
 botao_confirmar=tk.Button(tela_deposito,text='Confimar', font=('Arial', 30, 'bold'),
-                          bg='green',fg='white',bd=2, relief="solid",command=depositar)
+                          bg='green',fg='white',bd=2, relief="solid",command=adicionar_deposito)
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 30, 'bold'))
@@ -353,5 +382,19 @@ texto_valor.place(relx=0.5,rely=0.25,anchor='center')
 valor_deposito=tk.Entry(tela_deposito,font=('Arial', 30, 'bold'))
 valor_deposito.place(relx=0.5,rely=0.35,anchor='center')
 
+#TELA CONFIRMAR DEPOSITO
+tela_confirmar=tk.Frame(janela)
+
+
+
+    #BOTÃO CANCELAR
+botao_cancelar=tk.Button(tela_confirmar, text='Cancelar', font=('Arial', 30, 'bold'),
+                         bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
+botao_cancelar.place(relx=0.01, rely=0.9)
+
+    #BOTÃO CONFIMAR
+botao_confirmar=tk.Button(tela_confirmar, text='Confimar', font=('Arial', 30, 'bold'),
+                          bg='green',fg='white',command=confirmar_deposito,bd=2, relief="solid")
+botao_confirmar.place(relx=0.87, rely=0.9)
 
 janela.mainloop()
