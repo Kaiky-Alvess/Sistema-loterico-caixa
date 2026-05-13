@@ -130,8 +130,9 @@ def mostrar_conta():
     conta=banco.buscar_conta(conta_atual)
     titular=tk.Label(tela_confirmar, text=f'{conta.titular}',font=('Arial', 30))
     titular.place(relx=0.5,rely=0.25,anchor='center')
-    valor=tk.Label(tela_confirmar, text=f'',font=('Arial', 30))
+    valor=tk.Label(tela_confirmar, text=f'{int(valor_deposito.get()):.2f}',font=('Arial', 30))
     valor.place(relx=0.5,rely=0.35,anchor='center')
+
 
 def finalizar_atendimento():
     carrinho.clear()
@@ -178,9 +179,6 @@ def abrir_tela_confirmar():
         if item["nome"] == "Deposito":
             mostrar_conta()
             mostrar_tela(tela_confirmar)
-            break
-        else:
-            finalizar_atendimento()
 
 
 
