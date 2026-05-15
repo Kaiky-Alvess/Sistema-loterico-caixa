@@ -10,22 +10,23 @@ CAMINHO_DB = os.path.join(
 
 
 class Conta():
-    def __init__(self, titular, saldo=0,id=None,tipo=None,conta=None):
+    def __init__(self, titular, saldo=0,id=None,tipo=None,conta=None,senha=None):
         self.id=id
         self.titular = titular
         self.saldo = saldo
         self.agencia = 732
-        self.conta = conta or randint(1000,9999)
+        self.conta = conta or randint(100000,999999)
+        self.senha= senha or randint(1000,9999)
         self.tipo = tipo
     def depositar(self, valor):
-        if valor > 0:
+        if valor > 0 and valor < 5000:
             self.saldo += valor
             return f'Depósito de R${valor:.2f} realizado com sucesso.'
         else:
             return 'Valor de depósito inválido.'
 
     def sacar(self, valor):
-        if valor > 0 and valor <= self.saldo:
+        if valor > 0 and valor <= self.saldo and valor <= 5000:
             self.saldo -= valor
             return f'Saque de R${valor:.2f} realizado com sucesso.'
         else:
@@ -54,7 +55,7 @@ class ContaCorrente(Conta):
         super().__init__(titular, saldo)
         self.tipo = 'Corrente'
     def sacar(self, valor):
-        if valor > 0 and valor <= self.saldo:
+        if valor > 0 and valor <= self.saldo and valor <= 5000:
             if valor < 500:
                 taxa = 0
                 self.saldo -= (valor + taxa)
@@ -79,16 +80,17 @@ class Banco():
             saldo REAL,
             agencia INTEGER,
             conta INTEGER,
-            tipo TEXT
+            tipo TEXT,
+            senha TEXT
         )
         """)
         self.conexao.commit()
 
     def salvar_conta(self, conta):
         self.cursor.execute("""
-        INSERT INTO usuarios (nome, saldo,  agencia, conta ,tipo)
-        VALUES (?, ?, ?, ?, ?)
-        """, (conta.titular, conta.saldo, conta.agencia, conta.conta, conta.tipo))
+        INSERT INTO usuarios (nome, saldo,  agencia, conta ,tipo, senha)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, (conta.titular, conta.saldo, conta.agencia, conta.conta, conta.tipo, conta.senha))
 
         self.conexao.commit()
 
@@ -109,13 +111,14 @@ class Banco():
             )
             conta.agencia = dado[3]
             conta.conta = dado[4]
+            conta.senha=dado[6]
             contas.append(conta)
         return contas
 
     def atualizar_conta(self, conta):
         self.cursor.execute("""
         UPDATE usuarios
-        SET nome = ?, saldo = ?, agencia = ?, conta = ?, tipo = ?
+        SET nome = ?, saldo = ?, agencia = ?, conta = ?, tipo = ?, senha = ?
         WHERE id = ?
         """, (
             conta.titular,
@@ -123,7 +126,9 @@ class Banco():
             conta.agencia,
             conta.conta,
             conta.tipo,
-            conta.id
+            conta.senha,
+            conta.id,
+
         ))
 
         self.conexao.commit()
@@ -152,14 +157,18 @@ class Banco():
         conta.id=dado[0]
         conta.agencia = dado[3]
         conta.conta = dado[4]
+        conta.senha = dado[6]
 
         return conta
 
 banco=Banco()
-
-
-
-
-
-
+if __name__ == '__main__':
+    contas=banco.listar_contas()
+    for conta in contas:
+        print(conta.titular)
+        print(conta.saldo)
+        print(conta.agencia)
+        print(conta.conta)
+        print(conta.tipo)
+        print(conta.senha)
 
