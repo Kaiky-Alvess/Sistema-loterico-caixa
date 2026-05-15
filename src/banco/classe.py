@@ -19,7 +19,7 @@ class Conta():
         self.senha= senha or randint(1000,9999)
         self.tipo = tipo
     def depositar(self, valor):
-        if valor > 0 and valor < 5000:
+        if valor > 5 and valor < 5000:
             self.saldo += valor
             return f'Depósito de R${valor:.2f} realizado com sucesso.'
         else:
@@ -55,7 +55,7 @@ class ContaCorrente(Conta):
         super().__init__(titular, saldo)
         self.tipo = 'Corrente'
     def sacar(self, valor):
-        if valor > 0 and valor <= self.saldo and valor <= 5000:
+        if valor > 5 and valor <= self.saldo and valor <= 5000:
             if valor < 500:
                 taxa = 0
                 self.saldo -= (valor + taxa)
