@@ -1,6 +1,6 @@
 import tkinter as tk
 import requests
-
+from assets.imagens import *
 from banco.classe import *
 from loterias.loterias import criar_tela_loteria
 
@@ -211,7 +211,7 @@ janela=tk.Tk()
 janela.geometry('1920x1080')
 janela.title('Sistema de Loterico Caixa')
 janela.state('zoomed')
-logo= tk.PhotoImage(file='Imagens/logo_caixa.png')
+logo = tk.PhotoImage(file='../assets/imagens/logo_caixa.png')
 janela.iconphoto(True,logo)
 
 
