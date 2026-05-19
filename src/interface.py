@@ -218,6 +218,7 @@ def remover_aposta(indice):
 
 def abrir_tela_atendimento():
     atualizar_carrinho()
+    calcular_carrinho()
     mostrar_tela(tela_atendimento)
 
 def abrir_tela_confirmar():
@@ -394,7 +395,9 @@ label_total.pack()
 frame_lista = tk.Frame(tela_atendimento)
 frame_lista.pack(pady=20, fill="both", expand=True)
 
-
+botao_ver_jogos= tk.Button(tela_atendimento,text='Ver Jogos', font=('Arial', 30, 'bold'),
+                           bd=2, relief="solid")
+botao_ver_jogos.place(relx=0.5, rely=0.9, anchor='center')
 
 botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
                            command=abrir_tela_confirmar,bd=2, relief="solid")

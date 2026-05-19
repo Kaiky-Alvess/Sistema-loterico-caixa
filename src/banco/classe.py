@@ -19,7 +19,7 @@ class Conta():
         self.senha= senha or randint(1000,9999)
         self.tipo = tipo
     def depositar(self, valor):
-        if valor > 5 and valor < 5000:
+        if valor >= 5 and valor <= 5000:
             self.saldo += valor
             return f'Depósito de R${valor:.2f} realizado com sucesso.'
         else:
