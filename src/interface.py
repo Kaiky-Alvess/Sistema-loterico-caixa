@@ -1,6 +1,6 @@
 import tkinter as tk
 import requests
-from assets.imagens import *
+
 from banco.classe import *
 from loterias.loterias import criar_tela_loteria
 
@@ -11,10 +11,10 @@ banco.listar_contas()
 carrinho=[]
 conta_atual=0
 indice_confirmacao=0
-
 saqueOuDeposito=''
+jogos=['LOTOFACIL','MEGASENA', 'QUINA']
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
-kaiky={"agencia":1234,"conta":56789}
+
 
 
 def buscar_lotofacil():
@@ -54,15 +54,32 @@ def mostrar_tela(frame):
 def tela_marcar_megasena():
     marcar_megaSena.limpar_aposta()
     mostrar_tela(marcar_megaSena)
+
 def tela_marcar_lotofacil():
     marcar_lotofacil.limpar_aposta()
     mostrar_tela(marcar_lotofacil)
+
 def tela_marcar_quina():
     marcar_quina.limpar_aposta()
     mostrar_tela(marcar_quina)
 
 def tela_serviçosFinanceiros():
     mostrar_tela(tela_serviços)
+
+def abrir_tela_jogos():
+    for widget in tela_jogos.winfo_children():
+        if isinstance(widget, tk.Label):
+            widget.destroy()
+    pos=0
+    for i,jogo in enumerate(carrinho):
+        if jogo['nome']=='Lotofacil' or jogo['nome']=='Mega Sena' or jogo['nome']=='Quina':
+            pos+=1
+            mostrar_jogos = tk.Label(tela_jogos, text=f'{jogo['nome']} {pos}'
+                                                      f'\n {jogo["numeros"]}',
+                                     font=('Arial', 20, 'bold'))
+            mostrar_jogos.pack()
+    mostrar_tela(tela_jogos)
+
 
 def abrir_tela_resultados():
     mostrar_tela(tela_resultados)
@@ -107,6 +124,7 @@ def abrir_tela_deposito():
 
 def abrir_tela_saldo():
     mostrar_tela(tela_saldo)
+
 def mostrar_saldo():
     conta = banco.buscar_conta(conta_atual)
     senha = senha_saldo.get()
@@ -396,7 +414,7 @@ frame_lista = tk.Frame(tela_atendimento)
 frame_lista.pack(pady=20, fill="both", expand=True)
 
 botao_ver_jogos= tk.Button(tela_atendimento,text='Ver Jogos', font=('Arial', 30, 'bold'),
-                           bd=2, relief="solid")
+                           bd=2, relief="solid",command=abrir_tela_jogos)
 botao_ver_jogos.place(relx=0.5, rely=0.9, anchor='center')
 
 botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
@@ -496,5 +514,14 @@ texto_titular = tk.Label(tela_saldo,font=('Arial',30,'bold'),fg="black")
 texto_titular.place(relx=0.5,rely=0.25,anchor='center')
 texto_saldo_valor = tk.Label(tela_saldo,font=('Arial',30,'bold'), fg="white")
 texto_saldo_valor.place(relx=0.5,rely=0.35,anchor='center')
+
+
+tela_jogos=tk.Frame(janela)
+
+
+
+botao_voltar=tk.Button(tela_jogos,text='Voltar', font=('Arial', 30, 'bold'),command=abrir_tela_atendimento,
+                       bd=2, relief="solid")
+botao_voltar.place(relx=0.01, rely=0.9)
 
 janela.mainloop()

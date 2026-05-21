@@ -17,7 +17,6 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
     def fazer_aposta():
         if len(selecionados) == limite:
             carrinho.append({"nome": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
-            print(carrinho)
             funcao_voltar()
     def limpar_aposta():
         selecionados.clear()
@@ -29,7 +28,6 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
             selecionados.clear()
             selecionados.extend(sample(range(1, total_numeros + 1), limite))
         carrinho.append({"nome": titulo, "numeros": sorted(selecionados[:]), "preco": preco})
-        print(carrinho)
         funcao_voltar()
     frame = tk.Frame(janela)
 
