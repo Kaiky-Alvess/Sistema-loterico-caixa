@@ -272,6 +272,13 @@ def limpar_campos():
     texto_titular.config(text='')
     texto_saldo_valor.config(text='', bg=tela_saldo.cget('bg'))
 
+def abrir_tela_conta():
+    mostrar_tela(tela_criar_conta)
+
+def criar_conta():
+    global titular
+    banco.salvar_conta(Conta(titular.get()))
+
 #JANELA
 janela=tk.Tk()
 janela.geometry('1920x1080')
@@ -305,6 +312,12 @@ botao_atendimento=tk.Button(tela_principal, text='Atendimento',font=('Arial', 25
                            ,bd=2, relief='solid',width=20,command=abrir_tela_atendimento)
 botao_atendimento.place(relx=0.01, rely=0.4)
 
+    #BOTÃO CRIAR CONTA
+botao_criar_conta=tk.Button(tela_principal,text='Criar Conta',font=('Arial', 25, 'bold'),
+                            bg='#69BCC7', fg='white'
+                            ,bd=2,relief="solid",width=20,command=abrir_tela_conta)
+botao_criar_conta.place(relx=0.25, rely=0.4)
+
     #BOTÃO MEGA SENA
 botao_megaSena=tk.Button(tela_principal, text='MEGA SENA', font=('Arial', 30, 'bold'),
                                    bg='green', fg='white', bd=True, relief="solid"
@@ -330,6 +343,30 @@ botao_quina.place(relx=0.7, rely=0.4)
 
 marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
                                  "blue","#DAA520",carrinho,precos["Quina"])
+
+#TELA CRIAR CONTA
+tela_criar_conta=tk.Frame(janela)
+
+texto_agencia=tk.Label(tela_criar_conta,text='Agencia: 0732', font=('Arial', 25, 'bold'),
+                        fg='black')
+texto_agencia.place(relx=0.01, rely=0.1)
+texto_titular=tk.Label(tela_criar_conta,text='Titular: ',font=('Arial', 25, 'bold'),
+                       fg='black')
+texto_titular.place(relx=0.01, rely=0.2)
+
+titular=tk.Entry(tela_criar_conta,font=('Arial', 25, 'bold'),width=25)
+titular.place(relx=0.08, rely=0.2)
+
+tipo_conta=tk.Radiobutton(tela_criar_conta)
+
+
+botao_voltar=tk.Button(tela_criar_conta,text='Voltar',font=('Arial', 30, 'bold'),
+                       bd=2,relief="solid",command=abrir_tela_principal)
+botao_voltar.place(relx=0.01, rely=0.9)
+
+botao_confirmar=tk.Button(tela_criar_conta,text='Confirmar',font=('Arial', 30, 'bold'),
+                          bd=2,relief="solid",fg='white',bg='Green')
+botao_confirmar.place(relx=0.87, rely=0.9)
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)

@@ -98,17 +98,11 @@ class Banco():
         self.cursor.execute("""
         SELECT * FROM usuarios
         """)
-
         dados = self.cursor.fetchall()
         contas = []
 
         for dado in dados:
-            conta = Conta(
-                titular=dado[1],
-                saldo=dado[2],
-                id=dado[0],
-                tipo=dado[5]
-            )
+            conta = Conta(titular=dado[1],saldo=dado[2],id=dado[0],tipo=dado[5])
             conta.agencia = dado[3]
             conta.conta = dado[4]
             conta.senha=dado[6]
@@ -120,16 +114,7 @@ class Banco():
         UPDATE usuarios
         SET nome = ?, saldo = ?, agencia = ?, conta = ?, tipo = ?, senha = ?
         WHERE id = ?
-        """, (
-            conta.titular,
-            conta.saldo,
-            conta.agencia,
-            conta.conta,
-            conta.tipo,
-            conta.senha,
-            conta.id,
-
-        ))
+        """, (conta.titular,conta.saldo,conta.agencia,conta.conta,conta.tipo,conta.senha,conta.id,))
 
         self.conexao.commit()
 
@@ -145,15 +130,9 @@ class Banco():
             return None
 
         if dado[5] == 'Poupanca':
-            conta = ContaPoupanca(
-                titular=dado[1],
-                saldo=dado[2]
-            )
+            conta = ContaPoupanca(titular=dado[1],saldo=dado[2])
         else:
-            conta = ContaCorrente(
-                titular=dado[1],
-                saldo=dado[2]
-            )
+            conta = ContaCorrente(titular=dado[1],saldo=dado[2])
         conta.id=dado[0]
         conta.agencia = dado[3]
         conta.conta = dado[4]
@@ -161,9 +140,16 @@ class Banco():
 
         return conta
 
+    def deletar_conta(self, conta):
+        self.cursor.execute("""
+        DELETE FROM usuarios
+        WHERE id = ?
+        """, (conta.id,))
+        self.conexao.commit()
 
 
 banco=Banco()
+
 if __name__ == '__main__':
     contas=banco.listar_contas()
     for conta in contas:
@@ -173,4 +159,4 @@ if __name__ == '__main__':
         print(conta.conta)
         print(conta.tipo)
         print(conta.senha)
-
+        print(conta.id)
