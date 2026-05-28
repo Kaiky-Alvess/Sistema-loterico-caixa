@@ -257,8 +257,12 @@ def cancelar_operação():
     limpar_campos()
     mostrar_tela(tela_principal)
 
-def validar(texto,total_algarismos):
+def validar_num(texto,total_algarismos):
     return texto == "" or (texto.isdigit() and len(texto) <= int(total_algarismos))
+
+def validar_txt(texto_inserido):
+    return not any(char.isdigit() for char in texto_inserido)
+
 
 def limpar_campos():
     global conta_atual
@@ -269,6 +273,7 @@ def limpar_campos():
     senha_saque.delete(0, tk.END)
     valor_deposito.delete(0, tk.END)
     senha_saldo.delete(0, tk.END)
+    titular.delete(0, tk.END)
     texto_titular.config(text='')
     texto_saldo_valor.config(text='', bg=tela_saldo.cget('bg'))
 
@@ -277,7 +282,17 @@ def abrir_tela_conta():
 
 def criar_conta():
     global titular
-    banco.salvar_conta(Conta(titular.get()))
+    if titular.get():
+        if pegar_selecao()=='Poupança':
+            #banco.salvar(ContaPoupanca(titular.get()))
+            pass
+        else:
+            #banco.salvar(ContaCorrente(titular.get()))
+            pass
+
+def pegar_selecao():
+    escolha=opcao.get()
+    return escolha
 
 #JANELA
 janela=tk.Tk()
@@ -288,7 +303,8 @@ logo = tk.PhotoImage(file='../assets/imagens/logo_caixa.png')
 janela.iconphoto(True,logo)
 
 
-validacao = janela.register(validar)
+valida_num = janela.register(validar_num)
+valida_texto = janela.register(validar_txt)
 
 #TELA PRINCIPAL
 tela_principal=tk.Frame(janela)
@@ -354,19 +370,34 @@ texto_titular=tk.Label(tela_criar_conta,text='Titular: ',font=('Arial', 25, 'bol
                        fg='black')
 texto_titular.place(relx=0.01, rely=0.2)
 
-titular=tk.Entry(tela_criar_conta,font=('Arial', 25, 'bold'),width=25)
+titular=tk.Entry(tela_criar_conta,font=('Arial', 25, 'bold'),width=25,validate='key',validatecommand=(valida_texto, "%P"))
 titular.place(relx=0.08, rely=0.2)
+texto_tipo=tk.Label(tela_criar_conta,text='Tipo:',font=('Arial', 25, 'bold'),)
+texto_tipo.place(relx=0.02, rely=0.3)
+opcao=tk.StringVar(value='Poupança')
+conta_poupança=tk.Radiobutton(tela_criar_conta,text='Poupança',font=('Arial', 25, 'bold'),variable=opcao,
+                              value='Poupança')
+conta_poupança.place(relx=0.08, rely=0.3)
+conta_corrente=tk.Radiobutton(tela_criar_conta,text='Corrente',font=('Arial', 25, 'bold'),variable=opcao,
+                              value='Corrente')
+conta_corrente.place(relx=0.2, rely=0.3)
 
-tipo_conta=tk.Radiobutton(tela_criar_conta)
-
+texto_criar_senha=tk.Label(tela_criar_conta,text='Digite sua senha: ',font=('Arial', 25, 'bold'),)
+criar_senha=tk.Entry(tela_criar_conta, validate='key', validatecommand=(valida_num, "%P", 4),
+                     font=('Arial', 30, 'bold'))
+criar_senha.place(relx=0.08, rely=0.3)
 
 botao_voltar=tk.Button(tela_criar_conta,text='Voltar',font=('Arial', 30, 'bold'),
                        bd=2,relief="solid",command=abrir_tela_principal)
 botao_voltar.place(relx=0.01, rely=0.9)
 
 botao_confirmar=tk.Button(tela_criar_conta,text='Confirmar',font=('Arial', 30, 'bold'),
-                          bd=2,relief="solid",fg='white',bg='Green')
+                          bd=2,relief="solid",fg='white',bg='Green',command=criar_conta)
 botao_confirmar.place(relx=0.87, rely=0.9)
+
+#TELA CONTA CRIADA
+tela_conta_criada=tk.Frame(janela)
+
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
@@ -377,11 +408,11 @@ tela_validar=tk.Frame(janela)
 
 texto=tk.Label(tela_validar, text="Agência",font=('Arial', 30, 'bold'))
 texto.pack()
-agencia=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",4),font=('Arial',30,'bold'))
+agencia=tk.Entry(tela_validar, validate='key', validatecommand=(valida_num, "%P", 4), font=('Arial', 30, 'bold'))
 agencia.pack()
 texto=tk.Label(tela_validar, text="Conta",font=('Arial',30,'bold'))
 texto.pack()
-numero_conta=tk.Entry(tela_validar,validate='key',validatecommand=(validacao,"%P",10),font=('Arial',30,'bold'))
+numero_conta=tk.Entry(tela_validar, validate='key', validatecommand=(valida_num, "%P", 10), font=('Arial', 30, 'bold'))
 numero_conta.pack()
 
 
