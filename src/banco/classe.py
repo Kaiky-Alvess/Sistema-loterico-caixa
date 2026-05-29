@@ -36,8 +36,8 @@ class Conta():
 
 
 class ContaPoupanca(Conta):
-    def __init__(self, titular, saldo=0 ):
-        super().__init__(titular, saldo)
+    def __init__(self, titular, saldo=0 ,senha=None):
+        super().__init__(titular, saldo, senha=senha)
         self.tipo = 'Poupanca'
     def render_juros(self):
         if self.saldo > 0:
@@ -51,8 +51,8 @@ class ContaPoupanca(Conta):
 
 
 class ContaCorrente(Conta):
-    def __init__(self, titular, saldo=0):
-        super().__init__(titular, saldo)
+    def __init__(self, titular, saldo=0, senha=None):
+        super().__init__(titular, saldo, senha=senha)
         self.tipo = 'Corrente'
     def sacar(self, valor):
         if valor > 5 and valor <= self.saldo and valor <= 5000:
@@ -102,10 +102,13 @@ class Banco():
         contas = []
 
         for dado in dados:
-            conta = Conta(titular=dado[1],saldo=dado[2],id=dado[0],tipo=dado[5])
+            if dado[5] == 'Poupanca':
+                conta = ContaPoupanca(titular=dado[1],saldo=dado[2], senha=dado[6])
+            else:
+                conta = ContaCorrente(titular=dado[1],saldo=dado[2], senha=dado[6])
+            conta.id = dado[0]
             conta.agencia = dado[3]
             conta.conta = dado[4]
-            conta.senha=dado[6]
             contas.append(conta)
         return contas
 
@@ -149,6 +152,7 @@ class Banco():
 
 
 banco=Banco()
+
 
 if __name__ == '__main__':
     contas=banco.listar_contas()

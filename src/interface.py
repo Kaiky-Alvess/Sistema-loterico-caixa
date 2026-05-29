@@ -276,19 +276,18 @@ def limpar_campos():
     titular.delete(0, tk.END)
     texto_titular.config(text='')
     texto_saldo_valor.config(text='', bg=tela_saldo.cget('bg'))
+    criar_senha.delete(0, tk.END)
 
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
 
 def criar_conta():
     global titular
-    if titular.get():
+    if titular.get() and criar_senha.get() and len(criar_senha.get()) == 4:
         if pegar_selecao()=='Poupança':
-            #banco.salvar(ContaPoupanca(titular.get()))
-            pass
+            banco.salvar_conta(ContaPoupanca(titular=titular.get(),senha=criar_senha.get()))
         else:
-            #banco.salvar(ContaCorrente(titular.get()))
-            pass
+            banco.salvar_conta(ContaCorrente(titular=titular.get(),senha=criar_senha.get()))
 
 def pegar_selecao():
     escolha=opcao.get()
@@ -382,10 +381,11 @@ conta_corrente=tk.Radiobutton(tela_criar_conta,text='Corrente',font=('Arial', 25
                               value='Corrente')
 conta_corrente.place(relx=0.2, rely=0.3)
 
-texto_criar_senha=tk.Label(tela_criar_conta,text='Digite sua senha: ',font=('Arial', 25, 'bold'),)
-criar_senha=tk.Entry(tela_criar_conta, validate='key', validatecommand=(valida_num, "%P", 4),
+texto_criar_senha=tk.Label(tela_criar_conta,text='Senha: ',font=('Arial', 25, 'bold'),)
+texto_criar_senha.place(relx=0.01, rely=0.4)
+criar_senha=tk.Entry(tela_criar_conta, validate='key', validatecommand=(valida_num, "%P", 4),show='*',
                      font=('Arial', 30, 'bold'))
-criar_senha.place(relx=0.08, rely=0.3)
+criar_senha.place(relx=0.08, rely=0.4)
 
 botao_voltar=tk.Button(tela_criar_conta,text='Voltar',font=('Arial', 30, 'bold'),
                        bd=2,relief="solid",command=abrir_tela_principal)
@@ -398,6 +398,8 @@ botao_confirmar.place(relx=0.87, rely=0.9)
 #TELA CONTA CRIADA
 tela_conta_criada=tk.Frame(janela)
 
+botao_voltar=tk.Button(tela_conta_criada,text='Voltar',font=('Arial', 30, 'bold'),
+                       command=abrir_tela_principal)
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
