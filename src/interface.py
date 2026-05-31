@@ -285,9 +285,17 @@ def criar_conta():
     global titular
     if titular.get() and criar_senha.get() and len(criar_senha.get()) == 4:
         if pegar_selecao()=='Poupança':
-            banco.salvar_conta(ContaPoupanca(titular=titular.get(),senha=criar_senha.get()))
+            conta=(ContaPoupanca(titular=titular.get(),senha=criar_senha.get()))
+            pass
         else:
-            banco.salvar_conta(ContaCorrente(titular=titular.get(),senha=criar_senha.get()))
+            conta=(ContaCorrente(titular=titular.get(),senha=criar_senha.get()))
+        banco.salvar_conta(conta)
+        informacoes.config(text=f'Titular: {conta.titular}\n'
+f'Agencia: {conta.agencia}\n'
+f'Conta: {conta.conta}\n'
+f'Tipo: {conta.tipo}\n'
+f'Senha: {conta.senha}\n',anchor="e")
+        mostrar_tela(tela_conta_criada)
 
 def pegar_selecao():
     escolha=opcao.get()
@@ -398,8 +406,12 @@ botao_confirmar.place(relx=0.87, rely=0.9)
 #TELA CONTA CRIADA
 tela_conta_criada=tk.Frame(janela)
 
+informacoes=tk.Label(tela_conta_criada,font=('Arial', 25, 'bold'),)
+informacoes.place(relx=0.01, rely=0.1)
+
 botao_voltar=tk.Button(tela_conta_criada,text='Voltar',font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal)
+botao_voltar.place(relx=0.01, rely=0.9)
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
