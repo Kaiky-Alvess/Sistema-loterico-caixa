@@ -13,5 +13,6 @@ f'Agencia: {conta.agencia}\n'
 f'Conta: {conta.conta}\n'
 f'Tipo: {conta.tipo}\n'
 f'Senha: {conta.senha}\n',anchor="e")
+        mostrar_tela()
 
 

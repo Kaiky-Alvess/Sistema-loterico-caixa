@@ -359,7 +359,7 @@ botao_voltar.place(relx=0.01, rely=0.9)
 
 botao_confirmar=tk.Button(tela_criar_conta,text='Confirmar',font=('Arial', 30, 'bold'),
                           bd=2,relief="solid",fg='white',bg='Green',command=lambda:criar_conta(titular.get(),criar_senha.get(),pegar_selecao(),informacoes
-                                                                                               ,mostrar_tela(tela_conta_criada)))
+                                                                                               ,lambda:mostrar_tela(tela_conta_criada)))
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 #TELA CONTA CRIADA
