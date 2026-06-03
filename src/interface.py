@@ -1,10 +1,7 @@
-import tkinter as tk
-import requests
-
-from banco.classe import *
+from telas.tela_resultados import *
 from loterias.loterias import criar_tela_loteria
-from servicos.servicos import *
-from servicos.loterias_api import *
+from src.telas.tela_criar_conta import *
+
 
 banco.listar_contas()
 
@@ -53,8 +50,6 @@ def abrir_tela_jogos():
     mostrar_tela(tela_jogos)
 
 
-def abrir_tela_resultados():
-    mostrar_tela(tela_resultados)
 
 def tela_validar_saque():
     global saqueOuDeposito
@@ -255,9 +250,7 @@ def abrir_tela_conta():
 
 
 
-def pegar_selecao():
-    escolha=opcao.get()
-    return escolha
+
 
 #JANELA
 janela=tk.Tk()
@@ -284,7 +277,8 @@ botao_serviços.place(relx=0.01, rely=0.2)
     #BOTÃO RESULTADOS
 botao_resultados=tk.Button(tela_principal, text='Ultimos Resultados',
                            font=('Arial', 25, 'bold'), bg='#69BCC7', fg='white'
-                           ,bd=2, relief='solid',width=20,command=abrir_tela_resultados)
+                           ,bd=2, relief='solid',width=20,
+                           command=lambda:abrir_tela_resultados(mostrar_tela,tela_resultados))
 botao_resultados.place(relx=0.25, rely=0.2)
 
     #BOTÃO ATENDIMENTO
@@ -325,52 +319,20 @@ botao_quina.place(relx=0.7, rely=0.4)
 marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
                                  "blue","#DAA520",carrinho,precos["Quina"])
 
-#TELA CRIAR CONTA
-tela_criar_conta=tk.Frame(janela)
 
-texto_agencia=tk.Label(tela_criar_conta,text='Agencia: 0732', font=('Arial', 25, 'bold'),
-                        fg='black')
-texto_agencia.place(relx=0.01, rely=0.1)
-texto_titular=tk.Label(tela_criar_conta,text='Titular: ',font=('Arial', 25, 'bold'),
-                       fg='black')
-texto_titular.place(relx=0.01, rely=0.2)
-
-titular=tk.Entry(tela_criar_conta,font=('Arial', 25, 'bold'),width=25,validate='key',validatecommand=(valida_texto, "%P"))
-titular.place(relx=0.08, rely=0.2)
-texto_tipo=tk.Label(tela_criar_conta,text='Tipo:',font=('Arial', 25, 'bold'),)
-texto_tipo.place(relx=0.02, rely=0.3)
-opcao=tk.StringVar(value='Poupança')
-conta_poupança=tk.Radiobutton(tela_criar_conta,text='Poupança',font=('Arial', 25, 'bold'),variable=opcao,
-                              value='Poupança')
-conta_poupança.place(relx=0.08, rely=0.3)
-conta_corrente=tk.Radiobutton(tela_criar_conta,text='Corrente',font=('Arial', 25, 'bold'),variable=opcao,
-                              value='Corrente')
-conta_corrente.place(relx=0.2, rely=0.3)
-
-texto_criar_senha=tk.Label(tela_criar_conta,text='Senha: ',font=('Arial', 25, 'bold'),)
-texto_criar_senha.place(relx=0.01, rely=0.4)
-criar_senha=tk.Entry(tela_criar_conta, validate='key', validatecommand=(valida_num, "%P", 4),show='*',
-                     font=('Arial', 30, 'bold'))
-criar_senha.place(relx=0.08, rely=0.4)
-
-botao_voltar=tk.Button(tela_criar_conta,text='Voltar',font=('Arial', 30, 'bold'),
-                       bd=2,relief="solid",command=abrir_tela_principal)
-botao_voltar.place(relx=0.01, rely=0.9)
-
-botao_confirmar=tk.Button(tela_criar_conta,text='Confirmar',font=('Arial', 30, 'bold'),
-                          bd=2,relief="solid",fg='white',bg='Green',command=lambda:criar_conta(titular.get(),criar_senha.get(),pegar_selecao(),informacoes
-                                                                                               ,lambda:mostrar_tela(tela_conta_criada)))
-botao_confirmar.place(relx=0.87, rely=0.9)
 
 #TELA CONTA CRIADA
 tela_conta_criada=tk.Frame(janela)
 
-informacoes=tk.Label(tela_conta_criada,font=('Arial', 25, 'bold'),)
+informacoes = tk.Label(tela_conta_criada, font=('Arial', 25, 'bold'), )
 informacoes.place(relx=0.01, rely=0.1)
 
 botao_voltar=tk.Button(tela_conta_criada,text='Voltar',font=('Arial', 30, 'bold'),
                        command=abrir_tela_principal)
 botao_voltar.place(relx=0.01, rely=0.9)
+
+tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada,
+                                         valida_texto,valida_num,informacoes)
 
 #TELA DE SERVIÇOS
 tela_serviços=tk.Frame(janela)
@@ -413,34 +375,8 @@ botao_saldo=tk.Button(tela_serviços, text=f'Saldo', font=('Arial', 30, 'bold'),
 botao_saldo.place(relx=0.01, rely=0.35)
 
 #TELA DE RESULTADOS
-tela_resultados=tk.Frame(janela)
+tela_resultados=criar_tela_resultados(janela,mostrar_tela,tela_principal)
 
-texto_resultado = tk.Label(tela_resultados,font=('Arial', 20, 'bold'),justify='center')
-texto_resultado.place(relx=0.48, rely=0.5, anchor='center')
-
-    #BOTÃO RESULTADO DA MEGA SENA
-botao_resultado_megaSena=tk.Button(tela_resultados, text='MEGA SENA', font=('Arial', 30, 'bold'),
-                                   bg='green', fg='white', bd=True, relief="solid"
-                                   ,width=10,command=lambda:buscar_megasena(texto_resultado))
-botao_resultado_megaSena.place(relx=0.2, rely=0.2)
-
-    #BOTÃO RESULTADO DA LOTOFACIL
-botao_resultado_lotofacil=tk.Button(tela_resultados, text='LOTOFACIL', font=('Arial', 30, 'bold'),
-                                    bg='purple', fg='white', bd=True, relief="solid"
-                                    ,width=10,command=lambda:buscar_lotofacil(texto_resultado))
-botao_resultado_lotofacil.place(relx=0.4, rely=0.2)
-
-    #BOTÃO RESULTADO DA QUINA
-botao_resultado_quina=tk.Button(tela_resultados, text='QUINA', font=('Arial', 30, 'bold'),
-                                bg='blue', fg='white', bd=True, relief="solid",
-                                width=10,command=lambda:buscar_quina(texto_resultado))
-botao_resultado_quina.place(relx=0.6, rely=0.2)
-
-
-    #BOTÃO VOLTAR (tela resultados)
-botao_voltar=tk.Button(tela_resultados, text='Voltar', font=('Arial', 30, 'bold'),
-                       command=abrir_tela_principal,bd=2, relief="solid")
-botao_voltar.place(relx=0.01, rely=0.9)
 
 #TELA DE ATENDIMENTO
 
