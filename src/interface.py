@@ -3,8 +3,8 @@ import requests
 
 from banco.classe import *
 from loterias.loterias import criar_tela_loteria
-
-
+from servicos.servicos import *
+from servicos.loterias_api import *
 
 banco.listar_contas()
 
@@ -15,34 +15,6 @@ saqueOuDeposito=''
 jogos=['LOTOFACIL','MEGASENA', 'QUINA']
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
 
-
-
-def buscar_lotofacil():
-    url = "https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest"
-    resposta = requests.get(url)
-    dados = resposta.json()
-    numeros = dados["dezenas"]
-    concurso = dados["concurso"]
-    texto_resultado.config(text=f"Lotofácil\nConcurso {concurso}\n" + " - ".join(numeros),
-                           bg="purple", fg="white")
-
-def buscar_megasena():
-    url = "https://loteriascaixa-api.herokuapp.com/api/megasena/latest"
-    resposta = requests.get(url)
-    dados = resposta.json()
-    numeros = dados["dezenas"]
-    concurso = dados["concurso"]
-    texto_resultado.config(text=f"Mega Sena\nConcurso {concurso}\n" + " - ".join(numeros),
-                           bg="green",fg="white")
-
-def buscar_quina():
-    url="https://loteriascaixa-api.herokuapp.com/api/quina/latest"
-    resposta= requests.get(url)
-    dados = resposta.json()
-    numeros = dados["dezenas"]
-    concurso = dados["concurso"]
-    texto_resultado.config(text=f"Quina\nConcurso {concurso}\n" + " - ".join(numeros),
-                           bg="blue",fg="white")
 
 def mostrar_tela(frame):
     global tela_atual
@@ -281,21 +253,7 @@ def limpar_campos():
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
 
-def criar_conta():
-    global titular
-    if titular.get() and criar_senha.get() and len(criar_senha.get()) == 4:
-        if pegar_selecao()=='Poupança':
-            conta=(ContaPoupanca(titular=titular.get(),senha=criar_senha.get()))
-            pass
-        else:
-            conta=(ContaCorrente(titular=titular.get(),senha=criar_senha.get()))
-        banco.salvar_conta(conta)
-        informacoes.config(text=f'Titular: {conta.titular}\n'
-f'Agencia: {conta.agencia}\n'
-f'Conta: {conta.conta}\n'
-f'Tipo: {conta.tipo}\n'
-f'Senha: {conta.senha}\n',anchor="e")
-        mostrar_tela(tela_conta_criada)
+
 
 def pegar_selecao():
     escolha=opcao.get()
@@ -400,7 +358,8 @@ botao_voltar=tk.Button(tela_criar_conta,text='Voltar',font=('Arial', 30, 'bold')
 botao_voltar.place(relx=0.01, rely=0.9)
 
 botao_confirmar=tk.Button(tela_criar_conta,text='Confirmar',font=('Arial', 30, 'bold'),
-                          bd=2,relief="solid",fg='white',bg='Green',command=criar_conta)
+                          bd=2,relief="solid",fg='white',bg='Green',command=lambda:criar_conta(titular.get(),criar_senha.get(),pegar_selecao(),informacoes
+                                                                                               ,mostrar_tela(tela_conta_criada)))
 botao_confirmar.place(relx=0.87, rely=0.9)
 
 #TELA CONTA CRIADA
@@ -462,19 +421,19 @@ texto_resultado.place(relx=0.48, rely=0.5, anchor='center')
     #BOTÃO RESULTADO DA MEGA SENA
 botao_resultado_megaSena=tk.Button(tela_resultados, text='MEGA SENA', font=('Arial', 30, 'bold'),
                                    bg='green', fg='white', bd=True, relief="solid"
-                                   ,width=10,command=buscar_megasena)
+                                   ,width=10,command=lambda:buscar_megasena(texto_resultado))
 botao_resultado_megaSena.place(relx=0.2, rely=0.2)
 
     #BOTÃO RESULTADO DA LOTOFACIL
 botao_resultado_lotofacil=tk.Button(tela_resultados, text='LOTOFACIL', font=('Arial', 30, 'bold'),
                                     bg='purple', fg='white', bd=True, relief="solid"
-                                    ,width=10,command=buscar_lotofacil)
+                                    ,width=10,command=lambda:buscar_lotofacil(texto_resultado))
 botao_resultado_lotofacil.place(relx=0.4, rely=0.2)
 
     #BOTÃO RESULTADO DA QUINA
 botao_resultado_quina=tk.Button(tela_resultados, text='QUINA', font=('Arial', 30, 'bold'),
                                 bg='blue', fg='white', bd=True, relief="solid",
-                                width=10,command=buscar_quina)
+                                width=10,command=lambda:buscar_quina(texto_resultado))
 botao_resultado_quina.place(relx=0.6, rely=0.2)
 
 
