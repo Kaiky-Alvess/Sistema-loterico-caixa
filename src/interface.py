@@ -1,14 +1,16 @@
+from src.telas.tela_serviços import abrir_tela_serviços_financeiros, criar_tela_serviços_financeiros
+from src.telas.tela_validar import *
 from telas.tela_resultados import *
 from loterias.loterias import criar_tela_loteria
 from src.telas.tela_criar_conta import *
-
+from banco.classe import *
 
 banco.listar_contas()
 
 carrinho=[]
 conta_atual=0
 indice_confirmacao=0
-saqueOuDeposito=''
+saque_ou_deposito= ''
 jogos=['LOTOFACIL','MEGASENA', 'QUINA']
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
 
@@ -32,8 +34,7 @@ def tela_marcar_quina():
     marcar_quina.limpar_aposta()
     mostrar_tela(marcar_quina)
 
-def tela_serviçosFinanceiros():
-    mostrar_tela(tela_serviços)
+
 
 def abrir_tela_jogos():
     for widget in tela_jogos.winfo_children():
@@ -49,39 +50,23 @@ def abrir_tela_jogos():
             mostrar_jogos.pack()
     mostrar_tela(tela_jogos)
 
-
+def pegar_operacao():
+    return saque_ou_deposito
 
 def tela_validar_saque():
-    global saqueOuDeposito
-    saqueOuDeposito='Saque'
+    global saque_ou_deposito
+    saque_ou_deposito = 'Saque'
     mostrar_tela(tela_validar)
+
 def tela_validar_deposito():
-    global saqueOuDeposito
-    saqueOuDeposito='Deposito'
+    global saque_ou_deposito
+    saque_ou_deposito = 'Deposito'
     mostrar_tela(tela_validar)
+
 def tela_validar_saldo():
-    global saqueOuDeposito
-    saqueOuDeposito='Saldo'
+    global saque_ou_deposito
+    saque_ou_deposito = 'Saldo'
     mostrar_tela(tela_validar)
-
-def validar_conta():
-    global conta_atual
-    if not agencia.get() or not numero_conta.get():
-        print("Erro")
-        return
-
-    validar_agencia=int(agencia.get())
-    validar_conta=int(numero_conta.get())
-    contas = banco.listar_contas()
-    for conta in contas:
-        if validar_agencia ==conta.agencia  and validar_conta == conta.conta:
-            conta_atual=conta.id
-            if saqueOuDeposito=='Saque':
-                abrir_tela_saque()
-            elif saqueOuDeposito=='Deposito':
-                abrir_tela_deposito()
-            else:
-                abrir_tela_saldo()
 
 def abrir_tela_saque():
     mostrar_tela(tela_saque)
@@ -174,7 +159,7 @@ def finalizar_atendimento():
     mostrar_tela(tela_principal)
 
 def abrir_tela_principal():
-    limpar_campos()
+    #limpar_campos()
     mostrar_tela(tela_principal)
 
 def atualizar_carrinho():
@@ -221,7 +206,7 @@ def abrir_tela_confirmar():
         abrir_tela_confirmar()
 
 def cancelar_operação():
-    limpar_campos()
+    #limpar_campos()
     mostrar_tela(tela_principal)
 
 def validar_num(texto,total_algarismos):
@@ -240,10 +225,10 @@ def limpar_campos():
     senha_saque.delete(0, tk.END)
     valor_deposito.delete(0, tk.END)
     senha_saldo.delete(0, tk.END)
-    titular.delete(0, tk.END)
+    #titular.delete(0, tk.END)
     texto_titular.config(text='')
     texto_saldo_valor.config(text='', bg=tela_saldo.cget('bg'))
-    criar_senha.delete(0, tk.END)
+    #criar_senha.delete(0, tk.END)
 
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
@@ -271,7 +256,7 @@ tela_atual = tela_principal
 
     #BOTÃO SERVIÇOS
 botao_serviços= tk.Button(tela_principal, text='Serviços Financeiros', font=('Arial', 25, 'bold'),
-                          command=tela_serviçosFinanceiros, bg='#69BCC7', fg='white'
+                          command=lambda:abrir_tela_serviços_financeiros(mostrar_tela,tela_servicos), bg='#69BCC7', fg='white'
                           ,bd=2, relief='solid',width=20)
 botao_serviços.place(relx=0.01, rely=0.2)
     #BOTÃO RESULTADOS
@@ -334,45 +319,17 @@ botao_voltar.place(relx=0.01, rely=0.9)
 tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada,
                                          valida_texto,valida_num,informacoes)
 
-#TELA DE SERVIÇOS
-tela_serviços=tk.Frame(janela)
+
 
 #TELA DE VALIDAÇÃO
-tela_validar=tk.Frame(janela)
-
-
-texto=tk.Label(tela_validar, text="Agência",font=('Arial', 30, 'bold'))
-texto.pack()
-agencia=tk.Entry(tela_validar, validate='key', validatecommand=(valida_num, "%P", 4), font=('Arial', 30, 'bold'))
-agencia.pack()
-texto=tk.Label(tela_validar, text="Conta",font=('Arial',30,'bold'))
-texto.pack()
-numero_conta=tk.Entry(tela_validar, validate='key', validatecommand=(valida_num, "%P", 10), font=('Arial', 30, 'bold'))
-numero_conta.pack()
+tela_validar= criar_tela_validar(janela, mostrar_tela, tela_principal, valida_num, abrir_tela_saque, abrir_tela_deposito,
+                                 abrir_tela_saldo, saque_ou_deposito,pegar_operacao)
 
 
 
-    #BOTÃO SAQUE
-botao_saque= tk.Button(tela_serviços, text=f'Saque', font=('Arial', 30, 'bold'),
-                       command=tela_validar_saque, bg='#69BCC7', fg='white', bd=True, relief="solid",width=10)
-botao_saque.place(relx=0.01, rely=0.25)
-
-
-    #BOTÃO DEPÓSITO
-botao_deposito= tk.Button(tela_serviços, text=f'Depósito', font=('Arial', 30, 'bold'),
-                           bg='#69BCC7', fg='white',bd=True,relief="solid",command=tela_validar_deposito,width=10)
-botao_deposito.place(relx=0.2, rely=0.25)
-
-
-    #BOTÃO VOLTAR (tela serviços)
-botao_voltar=tk.Button(tela_serviços, text='Voltar', font=('Arial', 30, 'bold'),
-                       command=abrir_tela_principal,bd=2, relief="solid")
-botao_voltar.place(relx=0.01, rely=0.9)
-
-    #BOTÃO SALDO
-botao_saldo=tk.Button(tela_serviços, text=f'Saldo', font=('Arial', 30, 'bold'),
-                      bg='#69BCC7', fg='white',bd=True, relief="solid",width=10,command=tela_validar_saldo)
-botao_saldo.place(relx=0.01, rely=0.35)
+#TELA SERVIÇOS FINANCEIROS
+tela_servicos=criar_tela_serviços_financeiros(janela,mostrar_tela,tela_principal,tela_validar_saque,
+                                              tela_validar_deposito,tela_validar_saldo)
 
 #TELA DE RESULTADOS
 tela_resultados=criar_tela_resultados(janela,mostrar_tela,tela_principal)
@@ -407,15 +364,7 @@ tela_saque=tk.Frame(janela)
 
 tela_deposito=tk.Frame(janela)
 
-    #BOTÃO CANCELAR
-botao_cancelar=tk.Button(tela_validar, text='Cancelar', font=('Arial', 30, 'bold'),
-                         bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
-botao_cancelar.place(relx=0.01, rely=0.9)
 
-    #BOTÃO CONFIRMAR
-botao_confirmar=tk.Button(tela_validar,text='Confimar', font=('Arial', 30, 'bold'),
-                          bg='green',fg='white',bd=2, relief="solid",command=validar_conta)
-botao_confirmar.place(relx=0.87, rely=0.9)
 
     #BOTÃO CANCELAR
 botao_cancelar=tk.Button(tela_saque, text='Cancelar', font=('Arial', 30, 'bold'),
