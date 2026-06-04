@@ -7,7 +7,7 @@ def abrir_tela_validar(mostrar_tela,tela):
     mostrar_tela(tela)
 
 def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_saque,
-                       abrir_tela_deposito,abrir_tela_saldo,saque_ou_deposito,pegar_operacao):
+                       abrir_tela_deposito,abrir_tela_saldo,saque_ou_deposito,pegar_operacao,definir_conta_atual):
 
     def validar_conta():
         if not agencia.get() or not numero_conta.get():
@@ -19,13 +19,18 @@ def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_
         operacao=pegar_operacao()
         for conta in contas:
             if validar_agencia == conta.agencia and validar_conta == conta.conta:
-                conta_atual = conta.id
+                definir_conta_atual(conta.id)
                 if operacao == 'Saque':
                     abrir_tela_saque()
                 elif operacao == 'Deposito':
                     abrir_tela_deposito()
                 else:
                     abrir_tela_saldo()
+                return
+
+    def limpar_tela_validar():
+        agencia.delete(0, tk.END)
+        numero_conta.delete(0, tk.END)
 
     tela=tk.Frame(janela)
     texto = tk.Label(tela, text="Agência", font=('Arial', 30, 'bold'))
@@ -47,4 +52,6 @@ def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_
                                bg='red', fg='white', command=lambda:mostrar_tela(tela_principal), bd=2, relief="solid")
     botao_cancelar.place(relx=0.01, rely=0.9)
 
+    tela.limpar = limpar_tela_validar
     return tela
+

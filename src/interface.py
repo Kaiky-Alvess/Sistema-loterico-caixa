@@ -56,16 +56,19 @@ def pegar_operacao():
 def tela_validar_saque():
     global saque_ou_deposito
     saque_ou_deposito = 'Saque'
+    tela_validar.limpar()
     mostrar_tela(tela_validar)
 
 def tela_validar_deposito():
     global saque_ou_deposito
     saque_ou_deposito = 'Deposito'
+    tela_validar.limpar()
     mostrar_tela(tela_validar)
 
 def tela_validar_saldo():
     global saque_ou_deposito
     saque_ou_deposito = 'Saldo'
+    tela_validar.limpar()
     mostrar_tela(tela_validar)
 
 def abrir_tela_saque():
@@ -219,8 +222,6 @@ def validar_txt(texto_inserido):
 def limpar_campos():
     global conta_atual
     conta_atual = 0
-    agencia.delete(0, tk.END)
-    numero_conta.delete(0, tk.END)
     valor_saque.delete(0, tk.END)
     senha_saque.delete(0, tk.END)
     valor_deposito.delete(0, tk.END)
@@ -232,7 +233,9 @@ def limpar_campos():
 
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
-
+def definir_conta_atual(id_conta):
+    global conta_atual
+    conta_atual = id_conta
 
 
 
@@ -323,7 +326,7 @@ tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela
 
 #TELA DE VALIDAÇÃO
 tela_validar= criar_tela_validar(janela, mostrar_tela, tela_principal, valida_num, abrir_tela_saque, abrir_tela_deposito,
-                                 abrir_tela_saldo, saque_ou_deposito,pegar_operacao)
+                                 abrir_tela_saldo, saque_ou_deposito,pegar_operacao,definir_conta_atual)
 
 
 
