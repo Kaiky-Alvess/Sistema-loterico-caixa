@@ -1,3 +1,4 @@
+from src.telas.tela_saque import criar_tela_saque
 from src.telas.tela_serviços import abrir_tela_serviços_financeiros, criar_tela_serviços_financeiros
 from src.telas.tela_validar import *
 from telas.tela_resultados import *
@@ -97,28 +98,6 @@ def mostrar_saldo():
     else:
         print("Senha incorreta")
 
-def sacar():
-    conta = banco.buscar_conta(conta_atual)
-    valor_texto = valor_saque.get()
-    senha_texto = senha_saque.get()
-    if not valor_texto or not senha_texto:
-        print("Preencha todos os campos")
-        return
-    valor = int(valor_texto)
-    if valor < 5:
-        print("Valor mínimo é 5")
-        return
-    if valor > 5000 or valor > conta.saldo:
-        print("Valor inválido")
-        return mostrar_tela(tela_principal)
-    if int(senha_texto) == int(conta.senha):
-        conta.sacar(valor)
-        banco.atualizar_conta(conta)
-        carrinho.append({"nome": "Saque","numeros": None,"preco": float(valor * -1)})
-        mostrar_tela(tela_principal)
-        print(conta.saldo)
-    else:
-        print("Senha incorreta")
 
 def adicionar_deposito():
     conta = banco.buscar_conta(conta_atual)
@@ -222,8 +201,6 @@ def validar_txt(texto_inserido):
 def limpar_campos():
     global conta_atual
     conta_atual = 0
-    valor_saque.delete(0, tk.END)
-    senha_saque.delete(0, tk.END)
     valor_deposito.delete(0, tk.END)
     senha_saldo.delete(0, tk.END)
     #titular.delete(0, tk.END)
@@ -233,10 +210,13 @@ def limpar_campos():
 
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
+
 def definir_conta_atual(id_conta):
     global conta_atual
     conta_atual = id_conta
 
+def pegar_conta_atual():
+    return conta_atual
 
 
 
@@ -326,7 +306,7 @@ tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela
 
 #TELA DE VALIDAÇÃO
 tela_validar= criar_tela_validar(janela, mostrar_tela, tela_principal, valida_num, abrir_tela_saque, abrir_tela_deposito,
-                                 abrir_tela_saldo, saque_ou_deposito,pegar_operacao,definir_conta_atual)
+                                 abrir_tela_saldo,pegar_operacao,definir_conta_atual)
 
 
 
@@ -363,30 +343,14 @@ botao_voltar=tk.Button(tela_atendimento, text='Voltar', font=('Arial', 30, 'bold
 botao_voltar.place(relx=0.01, rely=0.9)
 
 #TELA DE SAQUE
-tela_saque=tk.Frame(janela)
+tela_saque=criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pegar_conta_atual)
 
 tela_deposito=tk.Frame(janela)
 
 
 
-    #BOTÃO CANCELAR
-botao_cancelar=tk.Button(tela_saque, text='Cancelar', font=('Arial', 30, 'bold'),
-                         bg='red',fg='white',command=cancelar_operação,bd=2, relief="solid")
-botao_cancelar.place(relx=0.01, rely=0.9)
 
-    #BOTÃO CONFIRMAR
-botao_confirmar=tk.Button(tela_saque,text='Confimar', font=('Arial', 30, 'bold'),
-                          bg='green',fg='white',bd=2, relief="solid",command=sacar)
-botao_confirmar.place(relx=0.87, rely=0.9)
 
-texto_valor=tk.Label(tela_saque, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 30, 'bold'))
-texto_valor.place(relx=0.5,rely=0.25,anchor='center')
-valor_saque=tk.Entry(tela_saque,font=('Arial', 30, 'bold'))
-valor_saque.place(relx=0.5,rely=0.35,anchor='center')
-texto_senha=tk.Label(tela_saque,text='Digite sua senha', font=('Arial', 30, 'bold'))
-texto_senha.place(relx=0.5,rely=0.45,anchor='center')
-senha_saque=tk.Entry(tela_saque,font=('Arial', 30, 'bold'),show='*')
-senha_saque.place(relx=0.5,rely=0.55,anchor='center')
 
 #TELA DEPOSITO
 

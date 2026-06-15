@@ -7,7 +7,7 @@ def abrir_tela_validar(mostrar_tela,tela):
     mostrar_tela(tela)
 
 def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_saque,
-                       abrir_tela_deposito,abrir_tela_saldo,saque_ou_deposito,pegar_operacao,definir_conta_atual):
+                       abrir_tela_deposito,abrir_tela_saldo,pegar_operacao,definir_conta_atual):
 
     def validar_conta():
         if not agencia.get() or not numero_conta.get():
