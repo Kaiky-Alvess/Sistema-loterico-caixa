@@ -14,6 +14,10 @@ def criar_tela_deposito(janela,mostrar_tela,tela_principal,carrinho,pegar_conta_
                             , "ID": conta.id})
         mostrar_tela(tela_principal)
         return valor
+
+    def limpar_tela_deposito():
+        valor_deposito.delete(0, tk.END)
+
     tela=tk.Frame(janela)
 
     # BOTÃO CANCELAR
@@ -30,5 +34,7 @@ def criar_tela_deposito(janela,mostrar_tela,tela_principal,carrinho,pegar_conta_
     texto_valor.place(relx=0.5, rely=0.25, anchor='center')
     valor_deposito = tk.Entry(tela, font=('Arial', 30, 'bold'))
     valor_deposito.place(relx=0.5, rely=0.35, anchor='center')
+
+    tela.limpar=limpar_tela_deposito
 
     return tela
