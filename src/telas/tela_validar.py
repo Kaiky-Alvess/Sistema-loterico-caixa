@@ -1,8 +1,6 @@
 import tkinter as tk
 from src.banco.classe import *
 
-
-
 def abrir_tela_validar(mostrar_tela,tela):
     mostrar_tela(tela)
 
