@@ -1,8 +1,6 @@
 import tkinter as tk
 from src.banco.classe import *
 
-def abrir_tela_saque(mostrar_tela,tela):
-    mostrar_tela(tela)
 
 def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pegar_conta_atual):
     def sacar():

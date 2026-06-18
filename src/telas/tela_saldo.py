@@ -1,8 +1,7 @@
 import tkinter as tk
 from src.banco.classe import *
 
-def abrir_tela_saldo(mostrar_tela,tela):
-    mostrar_tela(tela)
+
 
 def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num):
     def mostrar_saldo():
