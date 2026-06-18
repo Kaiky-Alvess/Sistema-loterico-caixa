@@ -1,5 +1,6 @@
 from src.telas.tela_confirmar_deposito import criar_tela_confirmar_deposito
 from src.telas.tela_deposito import criar_tela_deposito
+from src.telas.tela_jogos import *
 from src.telas.tela_saldo import criar_tela_saldo
 from src.telas.tela_saque import *
 from src.telas.tela_serviços import *
@@ -40,19 +41,7 @@ def tela_marcar_quina():
 
 
 
-def abrir_tela_jogos():
-    for widget in tela_jogos.winfo_children():
-        if isinstance(widget, tk.Label):
-            widget.destroy()
-    pos=0
-    for i,jogo in enumerate(carrinho):
-        if jogo['nome']=='Lotofacil' or jogo['nome']=='Mega Sena' or jogo['nome']=='Quina':
-            pos+=1
-            mostrar_jogos = tk.Label(tela_jogos, text=f'{jogo['nome']} {pos}'
-                                                      f'\n {jogo["numeros"]}',
-                                     font=('Arial', 20, 'bold'))
-            mostrar_jogos.pack()
-    mostrar_tela(tela_jogos)
+
 
 def pegar_operacao():
     return saque_ou_deposito
@@ -281,7 +270,7 @@ frame_lista = tk.Frame(tela_atendimento)
 frame_lista.pack(pady=20, fill="both", expand=True)
 
 botao_ver_jogos= tk.Button(tela_atendimento,text='Ver Jogos', font=('Arial', 30, 'bold'),
-                           bd=2, relief="solid",command=abrir_tela_jogos)
+                           bd=2, relief="solid",command=lambda:abrir_tela_jogos(mostrar_tela,tela_jogos,carrinho))
 botao_ver_jogos.place(relx=0.5, rely=0.9, anchor='center')
 
 botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
@@ -303,12 +292,6 @@ tela_confirmar_deposito,abrir_tela_confirmar=criar_tela_confirmar_deposito(janel
 
 tela_saldo=criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num)
 
-tela_jogos=tk.Frame(janela)
-
-
-
-botao_voltar=tk.Button(tela_jogos,text='Voltar', font=('Arial', 30, 'bold'),command=abrir_tela_atendimento,
-                       bd=2, relief="solid")
-botao_voltar.place(relx=0.01, rely=0.9)
+tela_jogos=criar_tela_jogos(janela,mostrar_tela,tela_atendimento,carrinho)
 
 janela.mainloop()
