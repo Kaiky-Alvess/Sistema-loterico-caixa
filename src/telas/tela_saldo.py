@@ -4,9 +4,9 @@ from src.banco.classe import *
 def abrir_tela_saldo(mostrar_tela,tela):
     mostrar_tela(tela)
 
-def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual):
+def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num):
     def mostrar_saldo():
-        conta = banco.buscar_conta(pegar_conta_atual)
+        conta = banco.buscar_conta(pegar_conta_atual())
         senha = senha_saldo.get()
         if not senha:
             print("Digite a senha")
@@ -36,7 +36,7 @@ def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual):
     texto_senha = tk.Label(tela, text='Digite sua senha', font=('Arial', 30, 'bold'))
     texto_senha.place(relx=0.5, rely=0.45, anchor='center')
 
-    senha_saldo = tk.Entry(tela, font=('Arial', 30, 'bold'), show='*')
+    senha_saldo = tk.Entry(tela, font=('Arial', 30, 'bold'), show='*',validatecommand=(valida_num,'%P',4),validate='key')
     senha_saldo.place(relx=0.5, rely=0.55, anchor='center')
 
     botao_confirmar = tk.Button(tela, text='Confimar', font=('Arial', 30, 'bold'),
