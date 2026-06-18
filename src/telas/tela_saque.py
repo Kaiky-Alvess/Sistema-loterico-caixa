@@ -25,6 +25,7 @@ def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pega
             print(conta.saldo)
         else:
             print("Senha incorreta")
+
     def limpar_tela_saque():
         valor_saque.delete(0, tk.END)
         senha_saque.delete(0, tk.END)
@@ -33,10 +34,13 @@ def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pega
 
     texto_valor = tk.Label(tela, text='Digite o valor \nMin: 5,00 | Max: 5.000,00', font=('Arial', 30, 'bold'))
     texto_valor.place(relx=0.5, rely=0.25, anchor='center')
+
     valor_saque = tk.Entry(tela, font=('Arial', 30, 'bold'))
     valor_saque.place(relx=0.5, rely=0.35, anchor='center')
+
     texto_senha = tk.Label(tela, text='Digite sua senha', font=('Arial', 30, 'bold'))
     texto_senha.place(relx=0.5, rely=0.45, anchor='center')
+
     senha_saque = tk.Entry(tela,validate='key',validatecommand=(valida_num,"%P",4),
                            font=('Arial', 30, 'bold'), show='*')
     senha_saque.place(relx=0.5, rely=0.55, anchor='center')
@@ -50,5 +54,6 @@ def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pega
     botao_confirmar.place(relx=0.87, rely=0.9)
 
     tela.limpar= limpar_tela_saque
+
     return tela
 

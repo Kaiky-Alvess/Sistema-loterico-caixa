@@ -14,15 +14,18 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
             if len(selecionados) < limite:
                 selecionados.append(numero)
                 botao.config(bg=cor_marcado, fg="white")
+
     def fazer_aposta():
         if len(selecionados) == limite:
             carrinho.append({"nome": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
             funcao_voltar()
+
     def limpar_aposta():
         selecionados.clear()
 
         for botao in botoes:
             botao.config(bg="#F0F0F0", fg="black")
+
     def fazer_surpresinha():
         for c in range(0,limite):
             selecionados.clear()
@@ -70,8 +73,6 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
     botao_surpresa= tk.Button(frame,text="Surpresa",font=("Arial",30,"bold"),command=fazer_surpresinha)
     botao_surpresa.place(relx=0.45, rely=0.9)
     frame.limpar_aposta = limpar_aposta
-
-
 
     return frame
 

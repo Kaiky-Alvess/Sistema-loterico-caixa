@@ -16,10 +16,10 @@ def abrir_tela_jogos(mostrar_tela,tela,carrinho):
     mostrar_tela(tela)
 
 def criar_tela_jogos(janela,mostrar_tela,tela_atendimento,carrinho):
-
-
     tela = tk.Frame(janela)
+
     botao_voltar = tk.Button(tela, text='Voltar', font=('Arial', 30, 'bold'), command=lambda:mostrar_tela(tela_atendimento),
                              bd=2, relief="solid")
     botao_voltar.place(relx=0.01, rely=0.9)
+
     return tela
