@@ -1,12 +1,13 @@
-from src.telas.tela_confirmar_deposito import criar_tela_confirmar_deposito
-from src.telas.tela_deposito import criar_tela_deposito
+from src.telas.criar_tela_conta_criada import *
+from src.telas.tela_confirmar_deposito import *
+from src.telas.tela_deposito import *
 from src.telas.tela_jogos import *
-from src.telas.tela_saldo import criar_tela_saldo
+from src.telas.tela_saldo import *
 from src.telas.tela_saque import *
 from src.telas.tela_serviços import *
 from src.telas.tela_validar import *
 from telas.tela_resultados import *
-from loterias.loterias import criar_tela_loteria
+from loterias.loterias import *
 from src.telas.tela_criar_conta import *
 from banco.classe import *
 
@@ -218,14 +219,8 @@ marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
 
 
 #TELA CONTA CRIADA
-tela_conta_criada=tk.Frame(janela)
+tela_conta_criada,informacoes=criar_tela_conta_criada(janela,mostrar_tela,tela_principal)
 
-informacoes = tk.Label(tela_conta_criada, font=('Arial', 25, 'bold'), )
-informacoes.place(relx=0.01, rely=0.1)
-
-botao_voltar=tk.Button(tela_conta_criada,text='Voltar',font=('Arial', 30, 'bold'),
-                       command=abrir_tela_principal)
-botao_voltar.place(relx=0.01, rely=0.9)
 
 tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada,
                                          valida_texto,valida_num,informacoes)
