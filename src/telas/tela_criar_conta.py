@@ -5,7 +5,6 @@ def abrir_tela_criar_conta(mostrar_tela,tela):
     mostrar_tela(tela)
 
 
-
 def criar_conta(titular,senha,tipo,label,mostrar_tela):
     if titular and int(senha) and len(senha) == 4:
         if tipo=='Poupança':
@@ -57,7 +56,7 @@ def criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada
     criar_senha.place(relx=0.08, rely=0.4)
 
     botao_voltar = tk.Button(tela, text='Voltar', font=('Arial', 30, 'bold'),
-                             bd=2, relief="solid", command=mostrar_tela(tela_principal))
+                             bd=2, relief="solid", command=lambda:mostrar_tela(tela_principal))
     botao_voltar.place(relx=0.01, rely=0.9)
 
 

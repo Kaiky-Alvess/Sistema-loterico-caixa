@@ -92,7 +92,6 @@ def finalizar_atendimento():
     mostrar_tela(tela_principal)
 
 def abrir_tela_principal():
-    #limpar_campos()
     mostrar_tela(tela_principal)
 
 def atualizar_carrinho():
@@ -135,17 +134,6 @@ def validar_num(texto,total_algarismos):
 
 def validar_txt(texto_inserido):
     return not any(char.isdigit() for char in texto_inserido)
-
-
-def limpar_campos():
-    global conta_atual
-    conta_atual = 0
-    #valor_deposito.delete(0, tk.END)
-    #senha_saldo.delete(0, tk.END)
-    #titular.delete(0, tk.END)
-    #texto_titular.config(text='')
-   # texto_saldo_valor.config(text='', bg=tela_saldo.cget('bg'))
-    #criar_senha.delete(0, tk.END)
 
 def abrir_tela_conta():
     mostrar_tela(tela_criar_conta)
@@ -197,7 +185,8 @@ botao_atendimento.place(relx=0.01, rely=0.4)
     #BOTÃO CRIAR CONTA
 botao_criar_conta=tk.Button(tela_principal,text='Criar Conta',font=('Arial', 25, 'bold'),
                             bg='#69BCC7', fg='white'
-                            ,bd=2,relief="solid",width=20,command=abrir_tela_conta)
+                            ,bd=2,relief="solid",width=20,
+                            command=lambda:abrir_tela_criar_conta(mostrar_tela,tela_criar_conta))
 botao_criar_conta.place(relx=0.25, rely=0.4)
 
     #BOTÃO MEGA SENA
