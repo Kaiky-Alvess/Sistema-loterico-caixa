@@ -11,13 +11,17 @@ from loterias.loterias import *
 from src.telas.tela_criar_conta import *
 from banco.classe import *
 
+
 banco.listar_contas()
 
 carrinho=[]
+
 conta_atual=0
 
 saque_ou_deposito= ''
+
 jogos=['LOTOFACIL','MEGASENA', 'QUINA']
+
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
 
 
@@ -39,10 +43,6 @@ def tela_marcar_lotofacil():
 def tela_marcar_quina():
     marcar_quina.limpar_aposta()
     mostrar_tela(marcar_quina)
-
-
-
-
 
 def pegar_operacao():
     return saque_ou_deposito
@@ -73,14 +73,6 @@ def abrir_tela_deposito():
 
 def abrir_tela_saldo():
     mostrar_tela(tela_saldo)
-
-
-
-
-
-
-
-
 
 def calcular_carrinho():
     total = sum(item["preco"] for item in carrinho)
@@ -124,12 +116,6 @@ def abrir_tela_atendimento():
     calcular_carrinho()
     mostrar_tela(tela_atendimento)
 
-
-
-def cancelar_operação():
-    #limpar_campos()
-    mostrar_tela(tela_principal)
-
 def validar_num(texto,total_algarismos):
     return texto == "" or (texto.isdigit() and len(texto) <= int(total_algarismos))
 
@@ -145,7 +131,6 @@ def definir_conta_atual(id_conta):
 
 def pegar_conta_atual():
     return conta_atual
-
 
 
 #JANELA
@@ -217,21 +202,15 @@ marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
                                  "blue","#DAA520",carrinho,precos["Quina"])
 
 
-
 #TELA CONTA CRIADA
 tela_conta_criada,informacoes=criar_tela_conta_criada(janela,mostrar_tela,tela_principal)
-
 
 tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada,
                                          valida_texto,valida_num,informacoes)
 
-
-
 #TELA DE VALIDAÇÃO
 tela_validar= criar_tela_validar(janela, mostrar_tela, tela_principal, valida_num, abrir_tela_saque, abrir_tela_deposito,
                                  abrir_tela_saldo,pegar_operacao,definir_conta_atual)
-
-
 
 #TELA SERVIÇOS FINANCEIROS
 tela_servicos=criar_tela_serviços_financeiros(janela,mostrar_tela,tela_principal,tela_validar_saque,
@@ -247,6 +226,7 @@ tela_atendimento=tk.Frame(janela)
 
 texto = tk.Label(tela_atendimento, font=("Arial", 16))
 texto.pack()
+
 label_total = tk.Label(tela_atendimento, font=("Arial", 18, "bold"))
 label_total.pack()
 
