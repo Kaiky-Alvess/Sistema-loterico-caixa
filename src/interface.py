@@ -301,7 +301,7 @@ tela_deposito=criar_tela_deposito(janela,mostrar_tela,tela_principal,carrinho,pe
 tela_confirmar_deposito,abrir_tela_confirmar=criar_tela_confirmar_deposito(janela,mostrar_tela,tela_principal,carrinho,
                                                       finalizar_atendimento)
 
-tela_saldo=criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual)
+tela_saldo=criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num)
 
 tela_jogos=tk.Frame(janela)
 
