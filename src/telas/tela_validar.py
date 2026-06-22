@@ -4,8 +4,7 @@ from src.banco.classe import *
 def abrir_tela_validar(mostrar_tela,tela):
     mostrar_tela(tela)
 
-def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_saque,
-                       abrir_tela_deposito,abrir_tela_saldo,pegar_operacao,definir_conta_atual):
+def criar_tela_validar(janela,mostrar_tela,valida_num,pegar_operacao,definir_conta_atual):
     def validar_conta():
         if not agencia.get() or not numero_conta.get():
             print("Erro")
@@ -18,11 +17,11 @@ def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_
             if validar_agencia == conta.agencia and validar_conta == conta.conta:
                 definir_conta_atual(conta.id)
                 if operacao == 'Saque':
-                    abrir_tela_saque()
+                    mostrar_tela("saque")
                 elif operacao == 'Deposito':
-                    abrir_tela_deposito()
+                    mostrar_tela("deposito")
                 else:
-                    abrir_tela_saldo()
+                    mostrar_tela("saldo")
                 return
 
     def limpar_tela_validar():
@@ -49,7 +48,7 @@ def criar_tela_validar(janela,mostrar_tela,tela_principal,valida_num,abrir_tela_
     botao_confirmar.place(relx=0.87, rely=0.9)
 
     botao_cancelar = tk.Button(tela, text='Cancelar', font=('Arial', 30, 'bold'),
-                               bg='red', fg='white', command=lambda:mostrar_tela(tela_principal), bd=2, relief="solid")
+                               bg='red', fg='white', command=lambda:mostrar_tela("principal"), bd=2, relief="solid")
     botao_cancelar.place(relx=0.01, rely=0.9)
 
     tela.limpar = limpar_tela_validar

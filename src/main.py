@@ -1,7 +1,10 @@
-from src.telas.criar_tela_conta_criada import *
+from src.telas import tela_principal
+from src.telas.tela_conta_criada import *
+from src.telas.tela_atendimento import criar_tela_atendimento
 from src.telas.tela_confirmar_deposito import *
 from src.telas.tela_deposito import *
 from src.telas.tela_jogos import *
+from src.telas.tela_principal import criar_tela_principal
 from src.telas.tela_saldo import *
 from src.telas.tela_saque import *
 from src.telas.tela_serviços import *
@@ -24,55 +27,20 @@ jogos=['LOTOFACIL','MEGASENA', 'QUINA']
 
 precos = {"Mega Sena": 6.00,"Lotofacil": 3.50,"Quina": 3.00}
 
+telas= {}
 
-def mostrar_tela(frame):
+tela_atual = None
+
+def mostrar_tela(nome):
     global tela_atual
     if tela_atual is not None:
         tela_atual.pack_forget()
-    frame.pack(fill='both', expand=True)
-    tela_atual = frame
-
-def tela_marcar_megasena():
-    marcar_megaSena.limpar_aposta()
-    mostrar_tela(marcar_megaSena)
-
-def tela_marcar_lotofacil():
-    marcar_lotofacil.limpar_aposta()
-    mostrar_tela(marcar_lotofacil)
-
-def tela_marcar_quina():
-    marcar_quina.limpar_aposta()
-    mostrar_tela(marcar_quina)
+    telas[nome].pack(fill='both', expand=True)
+    tela_atual = telas[nome]
 
 def pegar_operacao():
     return saque_ou_deposito
 
-def tela_validar_saque():
-    global saque_ou_deposito
-    saque_ou_deposito = 'Saque'
-    tela_validar.limpar()
-    mostrar_tela(tela_validar)
-
-def tela_validar_deposito():
-    global saque_ou_deposito
-    saque_ou_deposito = 'Deposito'
-    tela_validar.limpar()
-    mostrar_tela(tela_validar)
-
-def tela_validar_saldo():
-    global saque_ou_deposito
-    saque_ou_deposito = 'Saldo'
-    tela_validar.limpar()
-    mostrar_tela(tela_validar)
-
-def abrir_tela_saque():
-    mostrar_tela(tela_saque)
-
-def abrir_tela_deposito():
-    mostrar_tela(tela_deposito)
-
-def abrir_tela_saldo():
-    mostrar_tela(tela_saldo)
 
 def calcular_carrinho():
     total = sum(item["preco"] for item in carrinho)
@@ -111,19 +79,12 @@ def remover_aposta(indice):
     atualizar_carrinho()
     calcular_carrinho()
 
-def abrir_tela_atendimento():
-    atualizar_carrinho()
-    calcular_carrinho()
-    mostrar_tela(tela_atendimento)
 
 def validar_num(texto,total_algarismos):
     return texto == "" or (texto.isdigit() and len(texto) <= int(total_algarismos))
 
 def validar_txt(texto_inserido):
     return not any(char.isdigit() for char in texto_inserido)
-
-def abrir_tela_conta():
-    mostrar_tela(tela_criar_conta)
 
 def definir_conta_atual(id_conta):
     global conta_atual
@@ -146,116 +107,46 @@ valida_num = janela.register(validar_num)
 valida_texto = janela.register(validar_txt)
 
 #TELA PRINCIPAL
-tela_principal=tk.Frame(janela)
-tela_principal.pack(fill='both', expand=True)
-tela_atual = tela_principal
+telas["principal"]=criar_tela_principal(janela,mostrar_tela)
 
-    #BOTÃO SERVIÇOS
-botao_serviços= tk.Button(tela_principal, text='Serviços Financeiros', font=('Arial', 25, 'bold'),
-                          command=lambda:abrir_tela_serviços_financeiros(mostrar_tela,tela_servicos), bg='#69BCC7', fg='white'
-                          ,bd=2, relief='solid',width=20)
-botao_serviços.place(relx=0.01, rely=0.2)
-    #BOTÃO RESULTADOS
-botao_resultados=tk.Button(tela_principal, text='Ultimos Resultados',
-                           font=('Arial', 25, 'bold'), bg='#69BCC7', fg='white'
-                           ,bd=2, relief='solid',width=20,
-                           command=lambda:abrir_tela_resultados(mostrar_tela,tela_resultados))
-botao_resultados.place(relx=0.25, rely=0.2)
+telas["atendimento"]=criar_tela_atendimento(janela,mostrar_tela)
 
-    #BOTÃO ATENDIMENTO
-botao_atendimento=tk.Button(tela_principal, text='Atendimento',font=('Arial', 25, 'bold'),
-                            bg='#69BCC7', fg='white'
-                           ,bd=2, relief='solid',width=20,command=abrir_tela_atendimento)
-botao_atendimento.place(relx=0.01, rely=0.4)
+telas["conta_criada"],informacoes=criar_tela_conta_criada(janela,mostrar_tela)
 
-    #BOTÃO CRIAR CONTA
-botao_criar_conta=tk.Button(tela_principal,text='Criar Conta',font=('Arial', 25, 'bold'),
-                            bg='#69BCC7', fg='white'
-                            ,bd=2,relief="solid",width=20,
-                            command=lambda:abrir_tela_criar_conta(mostrar_tela,tela_criar_conta))
-botao_criar_conta.place(relx=0.25, rely=0.4)
-
-    #BOTÃO MEGA SENA
-botao_megaSena=tk.Button(tela_principal, text='MEGA SENA', font=('Arial', 30, 'bold'),
-                                   bg='green', fg='white', bd=True, relief="solid"
-                                   ,width=20,command=tela_marcar_megasena)
-botao_megaSena.place(relx=0.7, rely=0.2)
-
-marcar_megaSena = criar_tela_loteria(janela, abrir_tela_principal,"Mega Sena",60,6,10,
-                                     "green","#DAA520",carrinho,precos["Mega Sena"])
-
-    #BOTÃO LOTOFAICL
-botao_lotofacil=tk.Button(tela_principal, text='LOTOFACIL', font=('Arial', 30, 'bold'),
-                                    bg='purple', fg='white', bd=True, relief="solid"
-                                    ,width=20,command=tela_marcar_lotofacil)
-botao_lotofacil.place(relx=0.7, rely=0.3)
-marcar_lotofacil = criar_tela_loteria(janela,abrir_tela_principal,"Lotofacil",25,15,5,
-                                      "purple","#DAA520",carrinho,precos["Lotofacil"])
-
-    #BOTÃO QUINA
-botao_quina=tk.Button(tela_principal, text='QUINA', font=('Arial', 30, 'bold'),
-                                bg='blue', fg='white', bd=True, relief="solid",
-                                width=20,command=tela_marcar_quina)
-botao_quina.place(relx=0.7, rely=0.4)
-
-marcar_quina= criar_tela_loteria(janela,abrir_tela_principal,"Quina",80,5,10,
-                                 "blue","#DAA520",carrinho,precos["Quina"])
-
-
-#TELA CONTA CRIADA
-tela_conta_criada,informacoes=criar_tela_conta_criada(janela,mostrar_tela,tela_principal)
-
-tela_criar_conta= criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada,
+telas["criar_conta"]= criar_tela_criar_conta(janela,mostrar_tela,
                                          valida_texto,valida_num,informacoes)
 
 #TELA DE VALIDAÇÃO
-tela_validar= criar_tela_validar(janela, mostrar_tela, tela_principal, valida_num, abrir_tela_saque, abrir_tela_deposito,
-                                 abrir_tela_saldo,pegar_operacao,definir_conta_atual)
+telas["validar"]= criar_tela_validar(janela, mostrar_tela, valida_num,pegar_operacao,definir_conta_atual)
 
 #TELA SERVIÇOS FINANCEIROS
-tela_servicos=criar_tela_serviços_financeiros(janela,mostrar_tela,tela_principal,tela_validar_saque,
-                                              tela_validar_deposito,tela_validar_saldo)
+telas["servicos_financeiros"]=criar_tela_serviços_financeiros(janela,mostrar_tela)
 
 #TELA DE RESULTADOS
-tela_resultados=criar_tela_resultados(janela,mostrar_tela,tela_principal)
+telas["resultados"]=criar_tela_resultados(janela,mostrar_tela)
 
 
 #TELA DE ATENDIMENTO
 
-tela_atendimento=tk.Frame(janela)
+telas["mega_sena"] = criar_tela_loteria(janela, mostrar_tela, "Mega Sena", 60, 6, 10,
+                                         "green", "#DAA520", carrinho, precos["Mega Sena"])
 
-texto = tk.Label(tela_atendimento, font=("Arial", 16))
-texto.pack()
+telas["lotofacil"] = criar_tela_loteria(janela, mostrar_tela, "Lotofacil", 25, 15, 5,
+                                          "purple", "#DAA520", carrinho, precos["Lotofacil"])
 
-label_total = tk.Label(tela_atendimento, font=("Arial", 18, "bold"))
-label_total.pack()
+telas["quina"] = criar_tela_loteria(janela,mostrar_tela, "Quina", 80, 5, 10,
+                                  "blue", "#DAA520", carrinho, precos["Quina"])
 
-frame_lista = tk.Frame(tela_atendimento)
-frame_lista.pack(pady=20, fill="both", expand=True)
+telas["saque"]=criar_tela_saque(janela,mostrar_tela,valida_num,carrinho,pegar_conta_atual)
 
-botao_ver_jogos= tk.Button(tela_atendimento,text='Ver Jogos', font=('Arial', 30, 'bold'),
-                           bd=2, relief="solid",command=lambda:abrir_tela_jogos(mostrar_tela,tela_jogos,carrinho))
-botao_ver_jogos.place(relx=0.5, rely=0.9, anchor='center')
+telas["deposito"]=criar_tela_deposito(janela,mostrar_tela,carrinho,pegar_conta_atual)
 
-botao_finalizar= tk.Button(tela_atendimento, text= 'Finalizar',font=('Arial', 30, 'bold'),
-                           command=lambda:abrir_tela_confirmar()
-                           ,bd=2, relief="solid")
-botao_finalizar.place(relx=0.89, rely=0.9)
-
-botao_voltar=tk.Button(tela_atendimento, text='Voltar', font=('Arial', 30, 'bold'),
-                       command=abrir_tela_principal,bd=2, relief="solid")
-botao_voltar.place(relx=0.01, rely=0.9)
-
-
-tela_saque=criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pegar_conta_atual)
-
-tela_deposito=criar_tela_deposito(janela,mostrar_tela,tela_principal,carrinho,pegar_conta_atual)
-
-tela_confirmar_deposito,abrir_tela_confirmar=criar_tela_confirmar_deposito(janela,mostrar_tela,tela_principal,carrinho,
+telas["confirmar_deposito"]=criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho,
                                                       finalizar_atendimento)
 
-tela_saldo=criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num)
+telas["saldo"]=criar_tela_saldo(janela,mostrar_tela,pegar_conta_atual,valida_num)
 
-tela_jogos=criar_tela_jogos(janela,mostrar_tela,tela_atendimento,carrinho)
+telas["jogos"]=criar_tela_jogos(janela,mostrar_tela)
 
+mostrar_tela("principal")
 janela.mainloop()

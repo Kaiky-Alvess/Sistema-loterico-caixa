@@ -18,7 +18,7 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
     def fazer_aposta():
         if len(selecionados) == limite:
             carrinho.append({"nome": titulo,"numeros": sorted(selecionados[:]),"preco":preco})
-            funcao_voltar()
+            funcao_voltar("principal")
 
     def limpar_aposta():
         selecionados.clear()
@@ -31,7 +31,7 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
             selecionados.clear()
             selecionados.extend(sample(range(1, total_numeros + 1), limite))
         carrinho.append({"nome": titulo, "numeros": sorted(selecionados[:]), "preco": preco})
-        funcao_voltar()
+        funcao_voltar("principal")
     frame = tk.Frame(janela)
 
     area = tk.Frame(frame)
@@ -48,13 +48,7 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
     texto.place(relx=0.0, rely=0.15)
 
     for i in range(1, total_numeros + 1):
-        botao = tk.Button(
-            area,
-            text=f"{i:02}",
-            width=5,
-            height=2,
-            font=("Arial", 14, "bold")
-        )
+        botao = tk.Button(area,text=f"{i:02}",width=5,height=2, font=("Arial", 14, "bold"))
 
         botao.config(command=lambda n=i, b=botao: marcar(n, b))
 
@@ -64,7 +58,8 @@ def criar_tela_loteria(janela,funcao_voltar, titulo,total_numeros,limite,colunas
         botao.grid(row=linha, column=coluna, padx=6, pady=6)
         botoes.append(botao)
 
-    botao_cancelar = tk.Button(frame,text="Cancelar", font=("Arial", 30, "bold"),bg="red",fg='white',command=funcao_voltar)
+    botao_cancelar = tk.Button(frame,text="Cancelar", font=("Arial", 30, "bold"),bg="red",fg='white',
+                               command=lambda:funcao_voltar("principal"))
     botao_cancelar.place(relx=0.01, rely=0.9)
 
     botao_confirmar = tk.Button(frame,text="Confirmar",font=("Arial", 30, "bold"),bg="green",fg='white',command=fazer_aposta)

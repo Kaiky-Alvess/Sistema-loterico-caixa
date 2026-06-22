@@ -20,7 +20,7 @@ f'Tipo: {conta.tipo}\n'
 f'Senha: {conta.senha}\n',anchor="e")
         mostrar_tela()
 
-def criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada
+def criar_tela_criar_conta(janela,mostrar_tela
                            ,valida_texto,valida_num,label):
     def pegar_selecao():
         escolha = opcao.get()
@@ -56,7 +56,7 @@ def criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada
     criar_senha.place(relx=0.08, rely=0.4)
 
     botao_voltar = tk.Button(tela, text='Voltar', font=('Arial', 30, 'bold'),
-                             bd=2, relief="solid", command=lambda:mostrar_tela(tela_principal))
+                             bd=2, relief="solid", command=lambda:mostrar_tela("principal"))
     botao_voltar.place(relx=0.01, rely=0.9)
 
 
@@ -64,6 +64,6 @@ def criar_tela_criar_conta(janela,mostrar_tela,tela_principal,tela_conta_criada
                                 bd=2, relief="solid", fg='white', bg='Green',
                                 command=lambda: criar_conta(titular.get(), criar_senha.get(), pegar_selecao(),
                                                             label
-                                                            , lambda: mostrar_tela(tela_conta_criada)))
+                                                            , lambda: mostrar_tela("conta_criada")))
     botao_confirmar.place(relx=0.87, rely=0.9)
     return tela

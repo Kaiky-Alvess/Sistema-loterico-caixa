@@ -3,7 +3,7 @@ from src.banco.classe import *
 
 
 
-def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida_num):
+def criar_tela_saldo(janela,mostrar_tela,pegar_conta_atual,valida_num):
     def mostrar_saldo():
         conta = banco.buscar_conta(pegar_conta_atual())
         senha = senha_saldo.get()
@@ -29,7 +29,7 @@ def criar_tela_saldo(janela,mostrar_tela,tela_principal,pegar_conta_atual,valida
     tela = tk.Frame(janela)
 
     botao_voltar = tk.Button(tela, text='Voltar', font=('Arial', 30, 'bold'),
-                             command=lambda:(mostrar_tela(tela_principal),limpar_tela_saldo()), bd=2, relief="solid")
+                             command=lambda:(mostrar_tela("tela_principal"),limpar_tela_saldo()), bd=2, relief="solid")
     botao_voltar.place(relx=0.01, rely=0.9)
 
     texto_senha = tk.Label(tela, text='Digite sua senha', font=('Arial', 30, 'bold'))

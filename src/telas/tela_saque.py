@@ -2,7 +2,7 @@ import tkinter as tk
 from src.banco.classe import *
 
 
-def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pegar_conta_atual):
+def criar_tela_saque(janela,mostrar_tela,valida_num,carrinho,pegar_conta_atual):
     def sacar():
         conta=banco.buscar_conta(pegar_conta_atual())
         valor_texto = valor_saque.get()
@@ -16,12 +16,12 @@ def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pega
             return
         if valor > 5000 or valor > conta.saldo:
             print("Valor inválido")
-            return mostrar_tela(tela_principal)
+            return mostrar_tela("principal")
         if int(senha_texto) == int(conta.senha):
             conta.sacar(valor)
             banco.atualizar_conta(conta)
             carrinho.append({"nome": "Saque", "numeros": None, "preco": float(valor * -1)})
-            mostrar_tela(tela_principal)
+            mostrar_tela("principal")
             print(conta.saldo)
         else:
             print("Senha incorreta")
@@ -46,7 +46,7 @@ def criar_tela_saque(janela,mostrar_tela,tela_principal,valida_num,carrinho,pega
     senha_saque.place(relx=0.5, rely=0.55, anchor='center')
 
     botao_cancelar = tk.Button(tela, text='Cancelar', font=('Arial', 30, 'bold'),
-                               bg='red', fg='white', command=lambda:mostrar_tela(tela_principal) , bd=2, relief="solid")
+                               bg='red', fg='white', command=lambda:mostrar_tela("principal") , bd=2, relief="solid")
     botao_cancelar.place(relx=0.01, rely=0.9)
 
     botao_confirmar = tk.Button(tela, text='Confimar', font=('Arial', 30, 'bold'),
