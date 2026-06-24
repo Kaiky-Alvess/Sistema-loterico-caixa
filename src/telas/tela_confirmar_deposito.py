@@ -4,7 +4,7 @@ from src.banco.classe import *
 indice_confirmacao=0
 
 
-def criar_tela_confirmar_deposito(janela,mostrar_tela,tela_principal,carrinho,finalizar_atendimento):
+def criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho):
     def mostrar_conta(item):
         for widget in tela.winfo_children():
             if isinstance(widget, tk.Label):

@@ -8,10 +8,10 @@ def criar_tela_deposito(janela,mostrar_tela,carrinho,pegar_conta_atual):
         conta = banco.buscar_conta(pegar_conta_atual())
         valor = int(valor_deposito.get())
         if valor > 5000:
-            return mostrar_tela("tela_principal")
+            return mostrar_tela("principal")
         carrinho.append({"nome": 'Deposito', "conta": conta.conta, "preco": float(valor), "agencia": conta.agencia
                             , "ID": conta.id})
-        mostrar_tela("tela_principal")
+        mostrar_tela("principal")
         return valor
 
     def limpar_tela_deposito():
@@ -21,7 +21,7 @@ def criar_tela_deposito(janela,mostrar_tela,carrinho,pegar_conta_atual):
 
     # BOTÃO CANCELAR
     botao_cancelar = tk.Button(tela, text='Cancelar', font=('Arial', 30, 'bold'),
-                               bg='red', fg='white', command=lambda:mostrar_tela("tela_principal"), bd=2, relief="solid")
+                               bg='red', fg='white', command=lambda:mostrar_tela("principal"), bd=2, relief="solid")
     botao_cancelar.place(relx=0.01, rely=0.9)
 
     # BOTÃO CONFIRMAR

@@ -16,9 +16,9 @@ def criar_tela_validar(janela,mostrar_tela,valida_num,pegar_operacao,definir_con
         for conta in contas:
             if validar_agencia == conta.agencia and validar_conta == conta.conta:
                 definir_conta_atual(conta.id)
-                if operacao == 'Saque':
+                if operacao == 'saque':
                     mostrar_tela("saque")
-                elif operacao == 'Deposito':
+                elif operacao == 'deposito':
                     mostrar_tela("deposito")
                 else:
                     mostrar_tela("saldo")
