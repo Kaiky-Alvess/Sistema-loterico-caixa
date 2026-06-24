@@ -18,13 +18,14 @@ def criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho):
     def abrir_tela_confirmar():
         global indice_confirmacao
         if indice_confirmacao >= len(carrinho):
-            finalizar_atendimento()
             indice_confirmacao = 0
+            mostrar_tela("principal")
+            carrinho.clear()
             return
         item = carrinho[indice_confirmacao]
         if item["nome"] == "Deposito":
             mostrar_conta(item)
-            mostrar_tela(tela)
+            mostrar_tela("confirmar_deposito")
         else:
             indice_confirmacao += 1
             abrir_tela_confirmar()
@@ -42,7 +43,7 @@ def criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho):
     tela = tk.Frame(janela)
 
     botao_cancelar = tk.Button(tela, text='Cancelar', font=('Arial', 30, 'bold'),
-                               bg='red', fg='white', command=lambda:mostrar_tela(tela_principal), bd=2, relief="solid")
+                               bg='red', fg='white', command=lambda:mostrar_tela("principal"), bd=2, relief="solid")
     botao_cancelar.place(relx=0.01, rely=0.9)
 
     botao_confirmar = tk.Button(tela, text='Confimar', font=('Arial', 30, 'bold'),

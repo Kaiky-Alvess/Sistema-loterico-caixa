@@ -77,7 +77,7 @@ valida_texto = janela.register(validar_txt)
 #TELA PRINCIPAL
 telas["principal"]=criar_tela_principal(janela,mostrar_tela)
 
-telas["atendimento"],atualizar_carrinho_atendimento=criar_tela_atendimento(janela,mostrar_tela,carrinho)
+
 
 telas["conta_criada"],informacoes=criar_tela_conta_criada(janela,mostrar_tela)
 
@@ -109,7 +109,9 @@ telas["saque"]=criar_tela_saque(janela,mostrar_tela,valida_num,carrinho,pegar_co
 
 telas["deposito"]=criar_tela_deposito(janela,mostrar_tela,carrinho,pegar_conta_atual)
 
-telas["confirmar_deposito"]=criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho)
+telas["confirmar_deposito"],abrir_tela_confirmar=criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho)
+
+telas["atendimento"],atualizar_carrinho_atendimento=criar_tela_atendimento(janela,mostrar_tela,carrinho,abrir_tela_confirmar)
 
 telas["saldo"]=criar_tela_saldo(janela,mostrar_tela,pegar_conta_atual,valida_num)
 
