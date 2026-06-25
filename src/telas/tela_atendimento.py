@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-def criar_tela_atendimento(janela, mostrar_tela,carrinho,abrir_tela_confirmar):
+def criar_tela_atendimento(janela, mostrar_tela,carrinho,abrir_tela_confirmar,atualizar_jogos):
     def calcular_carrinho():
         total = sum(item["preco"] for item in carrinho)
         label_total.config(text=f"Total: R$ {total:.2f}")
@@ -49,7 +49,7 @@ def criar_tela_atendimento(janela, mostrar_tela,carrinho,abrir_tela_confirmar):
 
     botao_ver_jogos = tk.Button(tela, text='Ver Jogos', font=('Arial', 30, 'bold'),
                                 bd=2, relief="solid",
-                                command=lambda: mostrar_tela("jogos"))
+                                command=lambda: (atualizar_jogos(),mostrar_tela("jogos")))
     botao_ver_jogos.place(relx=0.5, rely=0.9, anchor='center')
 
     botao_finalizar = tk.Button(tela, text='Finalizar', font=('Arial', 30, 'bold'),

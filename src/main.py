@@ -111,11 +111,13 @@ telas["deposito"]=criar_tela_deposito(janela,mostrar_tela,carrinho,pegar_conta_a
 
 telas["confirmar_deposito"],abrir_tela_confirmar=criar_tela_confirmar_deposito(janela,mostrar_tela,carrinho)
 
-telas["atendimento"],atualizar_carrinho_atendimento=criar_tela_atendimento(janela,mostrar_tela,carrinho,abrir_tela_confirmar)
+telas["jogos"],atualizar_jogos=criar_tela_jogos(janela,mostrar_tela,carrinho)
+
+telas["atendimento"],atualizar_carrinho_atendimento=criar_tela_atendimento(janela,mostrar_tela,carrinho,abrir_tela_confirmar,atualizar_jogos)
 
 telas["saldo"]=criar_tela_saldo(janela,mostrar_tela,pegar_conta_atual,valida_num)
 
-telas["jogos"]=criar_tela_jogos(janela,mostrar_tela)
+
 
 mostrar_tela("principal")
 janela.mainloop()
