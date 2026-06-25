@@ -29,7 +29,7 @@ def criar_tela_atendimento(janela, mostrar_tela,carrinho,abrir_tela_confirmar,at
                 botao_remover = tk.Button(linha, text="—", font=("Arial", 14, "bold")
                                           , bg="red", fg="white", command=lambda idx=i: remover_aposta(idx))
                 botao_remover.pack(side="left")
-            calcular_carrinho()
+        calcular_carrinho()
 
     def remover_aposta(indice):
         carrinho.pop(indice)
