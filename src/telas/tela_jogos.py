@@ -11,7 +11,7 @@ def criar_tela_jogos(janela,mostrar_tela,carrinho):
         for i, jogo in enumerate(carrinho):
             if jogo['nome'] == 'Lotofacil' or jogo['nome'] == 'Mega Sena' or jogo['nome'] == 'Quina':
                 pos += 1
-                mostrar_jogos = tk.Label(tela, text=f'{jogo['nome']} {pos}'
+                mostrar_jogos = tk.Label(tela, text=f'{jogo["nome"]} {pos}'
                                                     f'\n {jogo["numeros"]}',
                                          font=('Arial', 20, 'bold'))
 
